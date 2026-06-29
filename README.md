@@ -63,6 +63,5 @@
 System Architecture
 <img width="522" height="1809" alt="t" src="https://github.com/user-attachments/assets/e80f2d4b-0492-45a6-bac1-44ccc901d53a" />
 --
-ภาพรวมสถาปัตยกรรมระบบที่ออกแบบมาเพื่อความเร็วและความปลอดภัยสูงสุด:
-![System Architecture](https://github.com/user-attachments/assets/8d224f09-b0ec-447c-b717-b214ac93cc21)
-
+Markdown จัดทำเอกสาร README.md หรือใชšใน HTML
+https://squsimarkdown.netlify.app/#need-fuction
