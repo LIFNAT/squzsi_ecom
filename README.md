@@ -26,7 +26,7 @@
 
 ## 🛠 เทคโนโลยีที่ใช้ (Tech Stack)
 *   **Frontend:** [Next.js](https://nextjs.org/) (SSR for performance & SEO), [Tailwind CSS](https://tailwindcss.com/)
-*   **Backend:** [Node.js](https://nodejs.org/) & [Express.js](https://expressjs.com/) (Middleware & Business Logic)
+*   **Backend: Node.js & Hono.js (Middleware & Business Logic)
 *   **Database & Auth:** [Supabase](https://supabase.com/) (PostgreSQL, Real-time Subscription, Row Level Security)
 
 ---
