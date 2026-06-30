@@ -13,17 +13,17 @@ export default function HeroSection() {
         {/* Left: Text */}
         <div className="flex flex-col items-start gap-6">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-100 text-pink-500 text-xs font-semibold tracking-wider uppercase">
-            ✨ New Collection 2025
+            ✨ คอลเลคชั่นใหม่ 2026
           </span>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-800 leading-tight">
-            Soft, Cute{" "}
+            นุ่มนิ่ม, น่ารัก{" "}
             <span className="relative">
-              <span className="relative z-10 text-pink-500">&amp; Stress</span>
+              <span className="relative z-10 text-pink-500">&amp; ฟินนน</span>
               <span className="absolute -bottom-1 left-0 w-full h-3 bg-pink-200/60 rounded-full -z-0" />
             </span>
             <br />
-            <span className="text-pink-400">Relieving</span>
+        
           </h1>
 
           <p className="text-lg text-gray-500 max-w-md leading-relaxed">

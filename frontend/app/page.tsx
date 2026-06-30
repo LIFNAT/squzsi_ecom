@@ -16,9 +16,9 @@ export default function Home() {
         <FeaturedProducts />
         <Categories />
         <PromoBanner />
-        <AllItem />
+       
       </main>
-      <Footer />
+   
     </div>
   );
 }

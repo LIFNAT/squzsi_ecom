@@ -104,8 +104,8 @@ export default function AllItem() {
           <p className="text-emerald-100/80 text-sm mb-6 max-w-xs">
             ราคาเป็นมิตร และปลอดภัย ไม่มีสารเคมี
           </p>
-          <button className="bg-pink-200 hover:bg-pink-700 transition-colors text-emerald-950 font-semibold px-5 py-2.5 rounded-full text-sm">
-            Shop now
+          <button className="bg-pink-200 hover:bg-pink-100 hover:scale-150 duration-200 transition-all  text-emerald-950 font-semibold px-5 py-2.5 rounded-full text-sm">
+            ซื้อเลย
           </button>
         </div>
         <div className="absolute right-6 top-1/2 -translate-y-1/2 text-[120px] md:text-[160px] select-none opacity-90">
@@ -130,7 +130,7 @@ export default function AllItem() {
         <button className="bg-lime-400 hover:bg-lime-300 transition-colors rounded-2xl flex flex-col items-center justify-center gap-1">
           <ChevronRight className="text-emerald-950" size={20} />
           <span className="text-xs font-semibold text-emerald-950">
-            See all
+            ดูทั้งหมด
           </span>
         </button>
       </div>

@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
+import { Itim } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FloatingCircles from "./components/FloatingCircles";
+
+// 1. ตั้งค่าฟอนต์
+const itim = Itim({
+  subsets: ["latin", "thai"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-itim", // กำหนดตัวแปร CSS สำหรับเรียกใช้
+});
+
 export const metadata: Metadata = {
   title: "SquishyLand – Kawaii Squishies, Plushies & Cute Toys",
   description:
@@ -29,9 +39,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-[#FFF8FB]">
-        <Navbar /> {children} <FloatingCircles /> <Footer />
+    // 2. นำ class ของฟอนต์มาใส่ที่ html เพื่อให้มีผลทั้งเว็บ
+    <html lang="en" className={`h-full antialiased ${itim.variable} font-sans`}>
+      <body className={`min-h-full flex flex-col bg-[#FFF8FB] ${itim.className}`}>
+        <Navbar /> 
+        <main className="flex-grow">
+          {children}
+        </main>
+        <FloatingCircles /> 
+        <Footer />
       </body>
     </html>
   );
