@@ -1,7 +1,8 @@
-import AboutItem from "./component/aboutitem"   
+
+import AllItemList from "./component/allitemlist"
 export default function AllItem() {
   return (
+<AllItemList />
    
-    <AboutItem />
   )
 }
