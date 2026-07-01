@@ -4,10 +4,10 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'api.candypop.lt',
+      protocol: 'https',
+        hostname: '**', // สองดอกจันหมายถึง "ทุกโดเมน"
         port: '',
-        pathname: '/**', // แก้ไขตรงนี้ครับ
+        pathname: '/**', // สองดอกจันหมายถึง "ทุกพาธ"
       },
     ],
   },

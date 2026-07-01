@@ -17,25 +17,25 @@ export default function Navbar() {
         </a>
 
         {/* Center Nav Links (Desktop) */}
-       <div className="hidden md:flex items-center gap-3">
-        <Link href="/">
-          <p className="px-4 py-2  text-sm font-semibold rounded-full hover:bg-pink-500 active:scale-95 transition-all duration-200 ">
-            หน้าหลัก
-          </p>
-        </Link>
-        <Link href="/allitem">
-          <p className="px-4 py-2  text-sm font-semibold rounded-full hover:bg-pink-500 active:scale-95 transition-all duration-200 ">
-            ซื้อของ
-          </p>
+        <div className="hidden md:flex items-center gap-3">
+          <Link href="/">
+            <p className="px-4 py-2  text-sm font-semibold rounded-full hover:bg-pink-500 hover:text-white active:scale-95 transition-all duration-500 ">
+              หน้าหลัก
+            </p>
           </Link>
-       </div>
+          <Link href="/Home/allitem">
+            <p className="px-4 py-2  text-sm font-semibold rounded-full hover:bg-pink-500 hover:text-white active:scale-95 transition-all duration-500 ">
+              ซื้อของ
+            </p>
+          </Link>
+        </div>
 
         {/* Right Icons */}
         <div className="hidden md:flex items-center gap-3">
           {/* Search */}
           <button
             aria-label="Search"
-            className="p-2 rounded-full text-gray-500 hover:text-pink-500 hover:bg-pink-50 transition-all duration-200"
+            className="p-2 rounded-full text-gray-500 hover:text-pink-500 cursor-pointer hover:bg-pink-50 transition-all duration-200"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
@@ -45,7 +45,7 @@ export default function Navbar() {
           {/* Wishlist */}
           <button
             aria-label="Wishlist"
-            className="p-2 rounded-full text-gray-500 hover:text-pink-500 hover:bg-pink-50 transition-all duration-200"
+            className="p-2 rounded-full text-gray-500 cursor-pointer hover:text-pink-500 hover:bg-pink-50 transition-all duration-200"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -55,7 +55,7 @@ export default function Navbar() {
           {/* Cart */}
           <button
             aria-label="Cart"
-            className="p-2 rounded-full text-gray-500 hover:text-pink-500 hover:bg-pink-50 transition-all duration-200 relative"
+            className="p-2 rounded-full text-gray-500 cursor-pointer hover:text-pink-500 hover:bg-pink-50 transition-all duration-200 relative"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13M7 13l-1-4m5 4v6m4-6v6" />
