@@ -1,143 +1,12 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useState } from "react";
-// นำเข้าไอคอนจาก lucide-react (เปลี่ยนชื่อ Link เป็น LinkIcon เพื่อไม่ให้ซ้ำกับ Next.js Link)
-import { ShoppingCart, Plus, Minus, ChevronRight, Link as LinkIcon } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Image from "next/image";
-// นำเข้า Link สำหรับการนำทางไปยังหน้าอื่น
 import Link from "next/link";
-import aboutitem from "@/app/aboutitem/id/page";
-
-type Category = {
-  name: string;
-  sub: string;
-  emoji: string;
-};
-
-type Product = {
-  id: string;
-  name: string;
-  sub: string;
-  weight: string;
-  priceWhole: string;
-  priceDecimal: string;
-  emoji: string;
-};
-
-const categories: Category[] = [
-  { name: "Vegetable", sub: "Local market", emoji: "🥦" },
-  { name: "Snacks & Breads", sub: "Sri-khen chimney", emoji: "🥖" },
-  { name: "Fruits", sub: "Central line", emoji: "🍎" },
-  { name: "Chicken legs", sub: "Imported Meat", emoji: "🍗" },
-  { name: "Milk & Dairy", sub: "Preserved food", emoji: "🥛" },
-];
-
-const products: Product[] = [
-  {
-    id: "beetroot",
-    name: "Beetroot",
-    sub: "(Local shop)",
-    weight: "500 gm.",
-    priceWhole: "17",
-    priceDecimal: "29",
-    emoji:
-      "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
-  },
-  {
-    id: "avocado",
-    name: "Italian Avocado",
-    sub: "(Local shop)",
-    weight: "500 gm.",
-    priceWhole: "12",
-    priceDecimal: "29",
-    emoji:
-      "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
-  },
-  {
-    id: "naan",
-    name: "Szam amm",
-    sub: "(Process food)",
-    weight: "500 gm.",
-    priceWhole: "14",
-    priceDecimal: "29",
-    emoji:
-      "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
-  },
-  {
-    id: "beef",
-    name: "Beef Mixed",
-    sub: "(Cut Bone)",
-    weight: "600 gm.",
-    priceWhole: "16",
-    priceDecimal: "29",
-    emoji:
-      "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
-  },
-  {
-    id: "sprite",
-    name: "Cold drinks",
-    sub: "(Sprite)",
-    weight: "500 gm.",
-    priceWhole: "18",
-    priceDecimal: "29",
-    emoji:
-      "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
-  },
-  {
-    id: "plant-hunter",
-    name: "Plant Hunter",
-    sub: "(Frozen pack)",
-    weight: "500 gm.",
-    priceWhole: "20",
-    priceDecimal: "29",
-    emoji:
-      "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
-  },
-  {
-    id: "carrot",
-    name: "Deshi Gajor",
-    sub: "(Local Carrot)",
-    weight: "500 gm.",
-    priceWhole: "19",
-    priceDecimal: "29",
-    emoji:
-      "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
-  },
-  {
-    id: "cucumber",
-    name: "Deshi Shosha",
-    sub: "(Local Cucumber)",
-    weight: "500 gm.",
-    priceWhole: "04",
-    priceDecimal: "29",
-    emoji:
-      "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
-  },
-  {
-    id: "chips",
-    name: "Lays chips",
-    sub: "(Bacon)",
-    weight: "500 gm.",
-    priceWhole: "21",
-    priceDecimal: "29",
-    emoji:
-      "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
-  },
-  {
-    id: "cabbage",
-    name: "Badhakopi",
-    sub: "(Local Cabbage)",
-    weight: "500 gm.",
-    priceWhole: "09",
-    priceDecimal: "29",
-    emoji:
-      "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
-  },
-];
+import { categories, products, type Product } from "@/app/data/mockProducts";
 
 function ProductCard({ product }: { product: Product }) {
-  const [qty, setQty] = useState(0);
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-4 flex flex-col h-full">
@@ -156,16 +25,13 @@ function ProductCard({ product }: { product: Product }) {
         <span className="text-sm align-top">.{product.priceDecimal}$</span>
       </div>
 
-      {/* เปลี่ยนกลับเป็นไอคอนรูปโซ่ เพื่อให้ตรงกับรูปภาพที่เคยส่งมา */}
       <div className="mt-auto w-full">
         <Link href={`/aboutitem/${product.id}`} className="block w-full">
-          <button 
+          <button
             className="w-full h-10 bg-green-500 hover:bg-green-600 active:scale-95 transition-all duration-200 rounded-full flex items-center justify-center text-white shadow-sm"
             aria-label={`Buy ${product.name}`}
           >
-           <p>
-            ซื้อ
-            </p>
+            <p>ซื้อ</p>
           </button>
         </Link>
       </div>

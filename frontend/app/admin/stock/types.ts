@@ -21,6 +21,7 @@ export interface Product {
   stock: number;
   reservedStock: number;  // สต็อกที่ถูกจองไว้ (เช่น คำสั่งซื้อที่ยังไม่จัดส่ง)
   status: ProductStatus;
+  tags?: string;
   createdAt: string;      // ISO date string
   updatedAt: string;      // ISO date string
 }
