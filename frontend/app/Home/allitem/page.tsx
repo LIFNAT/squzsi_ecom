@@ -1,8 +1,9 @@
+import AllItemList from "./component/allitemlist";
 
-import AllItemList from "./component/allitemlist"
-export default function AllItem() {
+export default function HomePage() {
   return (
-<AllItemList />
-   
-  )
+    <main>
+      <AllItemList />
+    </main>
+  );
 }

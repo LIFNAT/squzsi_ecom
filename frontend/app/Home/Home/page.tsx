@@ -17,6 +17,7 @@ export default function Homepage() {
                 <FeaturedProducts />
                 <Categories />
                 <PromoBanner />
+               
             </main>
         </motion.div>
     )
