@@ -30,8 +30,12 @@ export default function AboutItem() {
   if (!product) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-4">
-        <h2 className="text-xl font-bold text-gray-800 mb-2">ไม่พบข้อมูลสินค้านี้</h2>
-        <p className="text-sm text-gray-400 mb-6">ลิงก์อาจไม่ถูกต้องหรือไม่มีสินค้าชิ้นนี้ในระบบ</p>
+        <h2 className="text-xl font-bold text-gray-800 mb-2">
+          ไม่พบข้อมูลสินค้านี้
+        </h2>
+        <p className="text-sm text-gray-400 mb-6">
+          ลิงก์อาจไม่ถูกต้องหรือไม่มีสินค้าชิ้นนี้ในระบบ
+        </p>
         <button
           onClick={() => router.push("/")}
           className="px-6 py-2 bg-pink-500 text-white font-medium text-sm rounded-full hover:bg-pink-600 transition-colors shadow-sm"
@@ -42,7 +46,9 @@ export default function AboutItem() {
     );
   }
 
-  const relatedProducts = products.filter((item) => item.id !== product.id).slice(0, 3);
+  const relatedProducts = products
+    .filter((item) => item.id !== product.id)
+    .slice(0, 3);
 
   return (
     <div className="min-h-screen bg-[linear-gradient(135deg,#fff7ed_0%,#fffaf5_100%)] px-4 py-6 md:px-6 lg:px-8">
@@ -85,14 +91,20 @@ export default function AboutItem() {
                 </span>
               </div>
 
-              <h1 className="text-3xl font-black text-gray-900">{product.name}</h1>
-              <p className="mt-2 text-sm text-gray-500">น้ำหนักสุทธิ {product.weight}</p>
+              <h1 className="text-3xl font-black text-gray-900">
+                {product.name}
+              </h1>
+              <p className="mt-2 text-sm text-gray-500">
+                น้ำหนักสุทธิ {product.weight}
+              </p>
 
               <div className="mt-4 flex items-center gap-2 text-sm text-amber-500">
                 {[...Array(5)].map((_, index) => (
                   <Star key={index} size={16} fill="currentColor" />
                 ))}
-                <span className="ml-1 font-semibold text-gray-600">4.8 · 1.2k รีวิว</span>
+                <span className="ml-1 font-semibold text-gray-600">
+                  4.8 · 1.2k รีวิว
+                </span>
               </div>
 
               <div className="mt-6 rounded-2xl bg-pink-50 p-4">
@@ -104,7 +116,9 @@ export default function AboutItem() {
                     ลด 10%
                   </span>
                 </div>
-                <p className="mt-2 text-sm text-gray-600">ราคานี้มีส่วนลดพิเศษสำหรับลูกค้าใหม่</p>
+                <p className="mt-2 text-sm text-gray-600">
+                  ราคานี้มีส่วนลดพิเศษสำหรับลูกค้าใหม่
+                </p>
               </div>
 
               <div className="mt-5 flex items-center gap-3">
@@ -128,16 +142,22 @@ export default function AboutItem() {
                 <span className="text-sm text-gray-500">เลือกจำนวนสินค้า</span>
               </div>
 
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                <button className="flex items-center justify-center gap-2 rounded-2xl bg-pink-500 px-4 py-3.5 font-semibold text-white shadow-lg shadow-pink-200 transition hover:bg-pink-600">
-                  <ShoppingCart size={18} />
-                  เพิ่มลงตะกร้า
-                </button>
-                <button className="rounded-2xl border border-pink-200 bg-white px-4 py-3.5 font-semibold text-pink-500 transition hover:bg-pink-50">
-                  ซื้อเลย
-                </button>
-              </div>
+        <div className="mt-6 grid grid-cols-2 gap-3">
+  {/* ปุ่มซื้อเลย */}
+  <Link href="/payment" className="w-full">
+    <button className="flex w-full items-center justify-center gap-2 rounded-2xl bg-pink-500 px-4 py-3.5 font-semibold text-white shadow-lg shadow-pink-200 transition hover:bg-pink-600">
+      ซื้อเลย
+    </button>
+  </Link>
 
+  {/* ปุ่มเพิ่มลงตะกร้า */}
+  <button className="flex w-full items-center justify-center gap-2 rounded-2xl border border-gray-500 px-4 py-3.5 font-semibold text-gray-500 transition hover:border-pink-600 hover:bg-pink-600 hover:text-white">
+    <ShoppingCart size={18} />
+    เพิ่มลงตะกร้า
+  </button>
+</div>
+             
+            
               <div className="mt-6 grid gap-3 text-sm text-gray-600 sm:grid-cols-3">
                 <div className="rounded-2xl border border-gray-100 bg-gray-50 p-3">
                   <ShieldCheck size={16} className="mb-2 text-emerald-500" />
@@ -157,7 +177,9 @@ export default function AboutItem() {
             <div className="rounded-[28px] border border-gray-100 bg-white p-6 shadow-sm">
               <div className="mb-3 flex items-center gap-2 text-pink-500">
                 <Sparkles size={18} />
-                <h2 className="text-lg font-semibold text-gray-900">สิ่งที่คุณจะได้รับ</h2>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  สิ่งที่คุณจะได้รับ
+                </h2>
               </div>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex items-start gap-2">
@@ -180,8 +202,12 @@ export default function AboutItem() {
         <div className="mt-8 rounded-[28px] border border-gray-100 bg-white p-6 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-xl font-bold text-gray-900">รายละเอียดสินค้า</h2>
-              <p className="mt-1 text-sm text-gray-500">ข้อมูลเพิ่มเติมเพื่อช่วยตัดสินใจซื้อของคุณ</p>
+              <h2 className="text-xl font-bold text-gray-900">
+                รายละเอียดสินค้า
+              </h2>
+              <p className="mt-1 text-sm text-gray-500">
+                ข้อมูลเพิ่มเติมเพื่อช่วยตัดสินใจซื้อของคุณ
+              </p>
             </div>
             <div className="rounded-full bg-pink-50 px-3 py-1 text-sm font-semibold text-pink-500">
               {product.category}
@@ -191,10 +217,14 @@ export default function AboutItem() {
           <div className="mt-6 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="rounded-2xl bg-gray-50 p-5">
               <h3 className="mb-2 font-semibold text-gray-900">คำอธิบาย</h3>
-              <p className="text-sm leading-7 text-gray-600">{product.description}</p>
+              <p className="text-sm leading-7 text-gray-600">
+                {product.description}
+              </p>
             </div>
             <div className="rounded-2xl border border-pink-100 bg-pink-50/70 p-5">
-              <h3 className="mb-3 font-semibold text-gray-900">ข้อดีของสินค้า</h3>
+              <h3 className="mb-3 font-semibold text-gray-900">
+                ข้อดีของสินค้า
+              </h3>
               <div className="space-y-2 text-sm text-gray-700">
                 <div className="flex items-center gap-2">
                   <BadgeCheck size={16} className="text-pink-500" />
@@ -215,7 +245,9 @@ export default function AboutItem() {
 
         <div className="mt-8">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">สินค้าที่คุณอาจชอบ</h2>
+            <h2 className="text-xl font-bold text-gray-900">
+              สินค้าที่คุณอาจชอบ
+            </h2>
             <span className="text-sm text-gray-500">แนะนำจากร้าน</span>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
@@ -226,7 +258,12 @@ export default function AboutItem() {
                 className="rounded-[24px] border border-gray-100 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
               >
                 <div className="relative mb-3 aspect-square overflow-hidden rounded-2xl bg-gray-50">
-                  <Image src={item.emoji} alt={item.name} fill className="object-cover" />
+                  <Image
+                    src={item.emoji}
+                    alt={item.name}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <h3 className="font-semibold text-gray-900">{item.name}</h3>
                 <p className="mt-1 text-sm text-gray-500">{item.sub}</p>
