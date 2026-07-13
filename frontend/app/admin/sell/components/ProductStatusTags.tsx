@@ -2,10 +2,6 @@ import React from "react";
 import { ProductStatus } from "./types";
 import { Field, inputClass } from "./Field";
 
-// =====================
-// ค่าคงที่ของตัวเลือกสถานะ
-// =====================
-
 interface StatusOption {
   value: ProductStatus;
   label: string;
@@ -34,21 +30,8 @@ const STATUS_OPTIONS: StatusOption[] = [
 // สถานะสินค้าและแท็ก
 // =====================
 
-interface ProductStatusTagsProps {
-  status: ProductStatus;
-  tags: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onStatusChange: (status: ProductStatus) => void;
-  disabled?: boolean;
-}
 
-export default function ProductStatusTags({
-  status,
-  tags,
-  onChange,
-  onStatusChange,
-  disabled,
-}: ProductStatusTagsProps) {
+export default function ProductStatusTags() {
   return (
     <section className="bg-white rounded-3xl shadow-sm shadow-pink-100/60 border border-pink-50 p-6 flex flex-col gap-4">
       <h2 className="text-base font-extrabold text-gray-700 flex items-center gap-2">
@@ -66,13 +49,9 @@ export default function ProductStatusTags({
             <button
               key={value}
               type="button"
-              onClick={() => onStatusChange(value)}
-              disabled={disabled}
-              className={`px-4 py-2 rounded-full text-sm font-semibold border-2 transition-all duration-200 active:scale-95 ${
-                status === value
-                  ? color + " shadow-sm scale-105"
-                  : "border-gray-200 text-gray-400 bg-gray-50 hover:border-pink-300 hover:text-pink-400"
-              }`}
+              // onClick={() => onStatusChange(value)}
+              // disabled={disabled}
+              className={`px-4 py-2 rounded-full text-sm shadow-sm scale-105 border-gray-200 text-gray-400 bg-gray-50 hover:border-pink-300 hover:text-pink-400 font-semibold border-2 transition-all duration-200 active:scale-95`}
             >
               {value === "active" && "🟢 "}
               {value === "draft" && "🟡 "}
@@ -82,23 +61,6 @@ export default function ProductStatusTags({
           ))}
         </div>
       </div>
-
-      {/* แท็กของสินค้า */}
-      <Field
-        label="แท็กสินค้า"
-        hint="คั่นแต่ละแท็กด้วยเครื่องหมายจุลภาค เช่น kawaii, cute, squishy"
-      >
-        <input
-          id="product-tags"
-          type="text"
-          name="tags"
-          value={tags}
-          onChange={onChange}
-          placeholder="kawaii, cute, squishy..."
-          className={inputClass()}
-          disabled={disabled}
-        />
-      </Field>
     </section>
   );
 }

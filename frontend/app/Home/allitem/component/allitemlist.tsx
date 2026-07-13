@@ -4,42 +4,54 @@ import { motion } from "motion/react";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { categories, products, type Product } from "@/app/data/mockProducts";
+import { propsgetProduct } from "../page";
+// import { categories, products, type Product } from "@/app/data/mockProducts";
+interface propsProductCard {
+  respobaw: propsgetProduct[];
+}
 
-function ProductCard({ product }: { product: Product }) {
+export const categories = [
+  { name: "Vegetable", sub: "Local market", emoji: "🥦" },
+  { name: "Snacks & Breads", sub: "Sri-khen chimney", emoji: "🥖" },
+  { name: "Fruits", sub: "Central line", emoji: "🍎" },
+  { name: "Chicken legs", sub: "Imported Meat", emoji: "🍗" },
+  { name: "Milk & Dairy", sub: "Preserved food", emoji: "🥛" },
+];
+
+function ProductCard() {
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-4 flex flex-col h-full">
       <div className="relative w-full md:h-[200px] h-[300px]">
-        <Image src={product.emoji} alt="" fill className="object-cover" />
+        {/* <Image src={product.emoji} alt="" fill className="object-cover" /> */}
       </div>
       <div className="text-[15px] font-semibold text-gray-900 leading-snug">
-        <h2>{product.name} </h2>
+        {/* <h2>{product.name} </h2>
         <span className="font-normal text-gray-500 text-[14px]">
           {product.sub}
-        </span>
+        </span> */}
       </div>
-      <div className="text-xs text-gray-400 mt-1 mb-2">{product.weight}</div>
+      {/* <div className="text-xs text-gray-400 mt-1 mb-2">{product.weight}</div>
       <div className="text-emerald-600 font-bold text-lg mb-4">
         {product.priceWhole}
         <span className="text-sm align-top">.{product.priceDecimal}$</span>
-      </div>
+      </div> */}
 
       <div className="mt-auto w-full">
-        <Link href={`/aboutitem/${product.id}`} className="block w-full">
+        {/* <Link href={`/aboutitem/${product.id}`} className="block w-full">
           <button
             className="w-full h-10 bg-green-500 hover:bg-green-600 active:scale-95 transition-all duration-200 rounded-full flex items-center justify-center text-white shadow-sm"
             aria-label={`Buy ${product.name}`}
           >
             <p>ซื้อ</p>
           </button>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
 }
 
-export default function AllItem() {
+export default function AllItem({ respobaw }: propsProductCard) {
   return (
     <motion.div
       animate={{ opacity: 1 }}
@@ -105,9 +117,48 @@ export default function AllItem() {
       </div>
 
       <div className="grid md:grid-cols-4 grid-cols-1 gap-4">
-        {products.map((p) => (
-          <ProductCard key={p.id} product={p} />
-        ))}
+        {respobaw.map((e, i) => {
+          return (
+            <div key={i}>
+              {/* Info */}
+              <div className="group relative bg-white rounded-3xl overflow-hidden shadow-md shadow-pink-100/60 hover:shadow-xl hover:shadow-pink-200/50 hover:-translate-y-2 transition-all duration-300 flex flex-col border border-pink-50">
+
+                <div className="relative overflow-hidden bg-gradient-to-br from-pink-50 to-rose-50 aspect-square">
+                  <img
+                    src={e.producy_image?.[0] || "/no-image.png"}
+                    alt={e.product_name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                </div>
+
+                <div className="p-3">
+                  <h3 className="font-bold text-gray-700 text-base leading-snug group-hover:text-pink-500 transition-colors duration-200">
+                    {e.product_name}
+                  </h3>
+
+                  <p className="text-xs text-gray-400">
+                    หมวดหมู่: {e.category}
+                  </p>
+
+                  <p className="text-sm text-gray-500 line-clamp-2">
+                    {e.description}
+                  </p>
+
+                  <div className="flex items-center justify-between mt-auto">
+                    <span className="text-xl font-extrabold text-pink-500">
+                      ${e.price}
+                    </span>
+
+                    <button
+                      className="px-4 py-2 rounded-full text-xs font-bold bg-pink-500 text-white hover:bg-pink-600 cursor-pointer transition-all duration-300 active:scale-95"
+                    >
+                      ดูสินค้า
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+        })}
       </div>
     </motion.div>
   );

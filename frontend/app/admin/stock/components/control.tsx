@@ -1,0 +1,99 @@
+"use client";
+
+import Link from "next/link";
+import SummaryCards from "./SummaryCards";
+import StockToolbar from "./StockToolbar";
+import StockTable from "./StockTable";
+import QuickEditModal from "./QuickEditModal";
+import { useState } from "react";
+import { propsgetProduct } from "../page";
+
+interface propsStockPage {
+  response: propsgetProduct[]
+}
+
+export default function StockPage({ response }: propsStockPage) {
+
+  const [popup, setpopup] = useState({
+    QuickEdit: false
+  })
+
+  const [search, setSearch] = useState("");
+
+  const filteredResponse = (response ?? []).filter((item) =>
+    item.product_name?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div className="relative min-h-screen bg-[#FFF8FB] py-10 px-4 sm:px-6">
+      {/* วงกลมตกแต่งข้างหลัง */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-pink-200/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-72 h-72 bg-rose-200/15 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="relative max-w-7xl mx-auto">
+        {/* ===================== Header ===================== */}
+        <div className="mb-8">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 text-xs text-gray-400 mb-4">
+            <Link href="/" className="hover:text-pink-400 transition-colors duration-200">
+              หน้าหลัก
+            </Link>
+            <span>/</span>
+            <Link href="/admin" className="hover:text-pink-400 transition-colors duration-200">
+              แอดมิน
+            </Link>
+            <span>/</span>
+            <span className="text-pink-400 font-semibold">จัดการสต็อก</span>
+          </div>
+
+          {/* หัวข้อ + ปุ่มเพิ่มสินค้า */}
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-pink-100 flex items-center justify-center text-xl shadow-sm">
+                📦
+              </div>
+              <div>
+                <h1 className="text-2xl font-extrabold text-gray-800">จัดการสต็อก</h1>
+                <p className="text-sm text-gray-400 mt-0.5">ดูและอัปเดตสต็อกสินค้าทั้งหมด</p>
+              </div>
+            </div>
+
+            {/* ไปหน้าเพิ่มสินค้า → sell/page.tsx */}
+            <Link
+              href="/admin/sell"
+              className="px-5 py-2.5 rounded-full bg-pink-400 text-white font-bold text-sm hover:bg-pink-500 hover:shadow-lg hover:shadow-pink-300/50 hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
+            >
+              + เพิ่มสินค้า
+            </Link>
+          </div>
+        </div>
+
+        <SummaryCards
+          response={response}
+        />
+
+        <div className="bg-white rounded-3xl shadow-sm shadow-pink-100/60 border border-pink-50 p-6">
+
+          <StockToolbar
+            response={response}
+            search={search}
+            setSearch={setSearch}
+          />
+
+          <StockTable
+            response={filteredResponse}
+          />
+        </div>
+      </div>
+
+
+      {popup.QuickEdit && (
+        <QuickEditModal
+
+        />
+      )}
+
+
+    </div>
+  );
+}

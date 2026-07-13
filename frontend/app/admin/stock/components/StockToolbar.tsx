@@ -1,30 +1,13 @@
+import { propsgetProduct } from "../page";
 import { CATEGORIES, SORT_OPTIONS } from "../types";
 
-// =====================
-// StockToolbar — ค้นหา / กรองหมวดหมู่ / กรองสถานะ / เรียงลำดับ
-// =====================
-
-interface StockToolbarProps {
+interface propsStockTable {
+  response: propsgetProduct[];
   search: string;
-  category: string;
-  statusFilter: string;
-  sort: string;
-  onSearch: (v: string) => void;
-  onCategory: (v: string) => void;
-  onStatus: (v: string) => void;
-  onSort: (v: string) => void;
+  setSearch: (value: string) => void;
 }
 
-export default function StockToolbar({
-  search,
-  category,
-  statusFilter,
-  sort,
-  onSearch,
-  onCategory,
-  onStatus,
-  onSort,
-}: StockToolbarProps) {
+export default function StockToolbar({ response, setSearch, search }: propsStockTable) {
   const selectCls =
     "px-3 py-2 rounded-2xl border border-pink-200 bg-white text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-300 hover:border-pink-300 transition-all duration-200";
 
@@ -39,7 +22,8 @@ export default function StockToolbar({
           id="stock-search"
           type="text"
           value={search}
-          onChange={(e) => onSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
+          // onChange={(e) => onSearch(e.target.value)}
           placeholder="ค้นหาชื่อสินค้า หรือ SKU..."
           className="w-full pl-9 pr-4 py-2 rounded-2xl border border-pink-200 bg-white text-sm text-gray-700 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-300 hover:border-pink-300 transition-all duration-200"
         />
@@ -48,8 +32,8 @@ export default function StockToolbar({
       {/* กรองหมวดหมู่ */}
       <select
         id="stock-filter-category"
-        value={category}
-        onChange={(e) => onCategory(e.target.value)}
+        // value={category}
+        // onChange={(e) => onCategory(e.target.value)}
         className={selectCls}
       >
         <option value="">ทุกหมวดหมู่</option>
@@ -63,8 +47,8 @@ export default function StockToolbar({
       {/* กรองสถานะสต็อก */}
       <select
         id="stock-filter-status"
-        value={statusFilter}
-        onChange={(e) => onStatus(e.target.value)}
+        // value={statusFilter}
+        // onChange={(e) => onStatus(e.target.value)}
         className={selectCls}
       >
         <option value="">ทุกสถานะ</option>
@@ -77,8 +61,8 @@ export default function StockToolbar({
       {/* เรียงลำดับ */}
       <select
         id="stock-sort"
-        value={sort}
-        onChange={(e) => onSort(e.target.value)}
+        // value={sort}
+        // onChange={(e) => onSort(e.target.value)}
         className={selectCls}
       >
         {SORT_OPTIONS.map((opt) => (
