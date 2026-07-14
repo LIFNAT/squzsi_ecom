@@ -74,9 +74,11 @@
 System Architecture
 
 ---
-Class Diagram
+Use Case Diagram
 <img width="1529" height="1130" alt="tect" src="https://github.com/user-attachments/assets/f51edba4-6ce1-4643-aa81-3d038d4c895e" />
-
+---
+Class Diagram
+<img width="923" height="1480" alt="Untitled Diagram drawio" src="https://github.com/user-attachments/assets/291e3818-2e88-46d0-904e-382cb3639fb9" />
 
 ---
 <img width="522" height="1809" alt="t" src="https://github.com/user-attachments/assets/e80f2d4b-0492-45a6-bac1-44ccc901d53a" />
