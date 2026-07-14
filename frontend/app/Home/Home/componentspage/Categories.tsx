@@ -43,9 +43,9 @@ export default function Categories() {
       <div className="max-w-7xl mx-auto px-6">
         {/* Heading */}
         <div className="text-center mb-14">
-          <span className="text-pink-400 text-xs font-bold uppercase tracking-widest">Browse by type</span>
-          <h2 className="mt-2 text-4xl font-extrabold text-gray-800">Shop Categories</h2>
-          <p className="mt-3 text-gray-400 text-sm max-w-md mx-auto">Find exactly what you&apos;re looking for in our curated collections.</p>
+          <span className="text-pink-400 text-xs font-bold uppercase tracking-widest">เลือกดูตามประเภท</span>
+          <h2 className="mt-2 text-4xl font-extrabold text-gray-800">หมวดหมู่สินค้า</h2>
+          <p className="mt-3 text-gray-400 text-sm max-w-md mx-auto">ค้นหาสิ่งที่คุณต้องการอย่างแท้จริง&apos;สิ่งที่คุณกำลังมองหาในคอลเลกชันที่เราคัดสรรมาเป็นพิเศษ</p>
         </div>
 
         {/* Cards */}

@@ -5,12 +5,14 @@ import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { propsgetProduct } from "../page";
-// import { categories, products, type Product } from "@/app/data/mockProducts";
+import { useState } from "react";
+
 interface propsProductCard {
   respobaw: propsgetProduct[];
 }
 
 export const categories = [
+  { name: "all", emoji: "🛍️" , sub : 'รายการทั้งหมด' },
   { name: "Vegetable", sub: "Local market", emoji: "🥦" },
   { name: "Snacks & Breads", sub: "Sri-khen chimney", emoji: "🥖" },
   { name: "Fruits", sub: "Central line", emoji: "🍎" },
@@ -18,40 +20,16 @@ export const categories = [
   { name: "Milk & Dairy", sub: "Preserved food", emoji: "🥛" },
 ];
 
-function ProductCard() {
-
-  return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-4 flex flex-col h-full">
-      <div className="relative w-full md:h-[200px] h-[300px]">
-        {/* <Image src={product.emoji} alt="" fill className="object-cover" /> */}
-      </div>
-      <div className="text-[15px] font-semibold text-gray-900 leading-snug">
-        {/* <h2>{product.name} </h2>
-        <span className="font-normal text-gray-500 text-[14px]">
-          {product.sub}
-        </span> */}
-      </div>
-      {/* <div className="text-xs text-gray-400 mt-1 mb-2">{product.weight}</div>
-      <div className="text-emerald-600 font-bold text-lg mb-4">
-        {product.priceWhole}
-        <span className="text-sm align-top">.{product.priceDecimal}$</span>
-      </div> */}
-
-      <div className="mt-auto w-full">
-        {/* <Link href={`/aboutitem/${product.id}`} className="block w-full">
-          <button
-            className="w-full h-10 bg-green-500 hover:bg-green-600 active:scale-95 transition-all duration-200 rounded-full flex items-center justify-center text-white shadow-sm"
-            aria-label={`Buy ${product.name}`}
-          >
-            <p>ซื้อ</p>
-          </button>
-        </Link> */}
-      </div>
-    </div>
-  );
-}
-
 export default function AllItem({ respobaw }: propsProductCard) {
+
+  const [selectcategor, setselectcategor] = useState('all')
+
+  const filterProducts = selectcategor === 'all'
+  ? respobaw
+  : respobaw.filter(
+    (i)=>i.category === selectcategor
+  )
+
   return (
     <motion.div
       animate={{ opacity: 1 }}
@@ -84,10 +62,11 @@ export default function AllItem({ respobaw }: propsProductCard) {
       </div>
 
       {/* Categories */}
-      <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 mt-8">
+      <div className="grid grid-cols-3 sm:grid-cols-7 gap-3 mt-8">
         {categories.map((cat) => (
           <button
             key={cat.name}
+            onClick={()=>setselectcategor(cat.name)}
             className="bg-white rounded-2xl border cursor-pointer duration-200 border-gray-100 p-4 flex flex-col items-start text-left hover:border-emerald-300 transition-colors"
           >
             <span className="text-2xl mb-2">{cat.emoji}</span>
@@ -117,7 +96,7 @@ export default function AllItem({ respobaw }: propsProductCard) {
       </div>
 
       <div className="grid md:grid-cols-4 grid-cols-1 gap-4">
-        {respobaw.map((e, i) => {
+        {filterProducts.map((e, i) => {
           return (
             <div key={i}>
               {/* Info */}
@@ -128,6 +107,17 @@ export default function AllItem({ respobaw }: propsProductCard) {
                     src={e.producy_image?.[0] || "/no-image.png"}
                     alt={e.product_name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+
+                          <div className="absolute inset-0 flex justify-end p-3">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="w-8 h-8 p-2  bg-gray-50 text-gray-300  rounded-full group-hover:bg-pink-400 group-hover:text-white duration-300"
+                      >
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                      </svg>
+                    </div>
                 </div>
 
                 <div className="p-3">
@@ -135,12 +125,12 @@ export default function AllItem({ respobaw }: propsProductCard) {
                     {e.product_name}
                   </h3>
 
-                  <p className="text-xs text-gray-400">
+                  <p className="text-sm text-gray-400">
                     หมวดหมู่: {e.category}
                   </p>
 
-                  <p className="text-sm text-gray-500 line-clamp-2">
-                    {e.description}
+                  <p className="text-sm text-gray-400 line-clamp-2">
+                    รายละเอียด : {e.description}
                   </p>
 
                   <div className="flex items-center justify-between mt-auto">
@@ -148,11 +138,12 @@ export default function AllItem({ respobaw }: propsProductCard) {
                       ${e.price}
                     </span>
 
-                    <button
+                    <Link 
+                    href={`/aboutitem/${e.id}`}
                       className="px-4 py-2 rounded-full text-xs font-bold bg-pink-500 text-white hover:bg-pink-600 cursor-pointer transition-all duration-300 active:scale-95"
                     >
                       ดูสินค้า
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>

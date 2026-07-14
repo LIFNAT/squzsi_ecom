@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
 import {
   BadgeCheck,
   ChevronLeft,
@@ -15,6 +16,18 @@ import {
   Star,
   Truck,
 } from "lucide-react";
+
+interface Product {
+  id: string;
+  product_name: string;
+  category: string;
+  description: string;
+  price: number;
+  promotion: number;
+  current_product: number;
+  producy_image: string[];
+}
+
 import Image from "next/image";
 import Link from "next/link";
 import { getProductById, products } from "@/app/data/mockProducts";
@@ -22,10 +35,36 @@ import { getProductById, products } from "@/app/data/mockProducts";
 export default function AboutItem() {
   const params = useParams();
   const router = useRouter();
-  const productId = params?.id;
+
+  const id = params?.id as string;
+
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
 
-  const product = getProductById(productId);
+  useEffect(() => {
+    if (!id) return;
+
+    const loadProduct = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:5000/product/getProductById/${id}`
+        );
+
+        const data = await res.json();
+
+        if (data.success || data.suess) {
+          setProduct(data.data);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProduct();
+  }, [id]);
+
 
   if (!product) {
     return (
@@ -65,15 +104,12 @@ export default function AboutItem() {
           <div className="rounded-[28px] border border-pink-100 bg-white p-4 shadow-[0_20px_60px_rgba(249,115,22,0.12)]">
             <div className="relative aspect-square overflow-hidden rounded-[24px] bg-pink-50">
               <Image
-                src={product.emoji}
-                alt={product.name}
+                src={product.producy_image[0]}
+                alt={product.product_name}
                 fill
                 className="object-cover"
                 priority
               />
-              <div className="absolute left-4 top-4 rounded-full bg-pink-500 px-3 py-1 text-xs font-semibold text-white">
-                แนะนำสุดฮิต
-              </div>
               <button className="absolute right-4 top-4 rounded-full border border-white/80 bg-white/90 p-2 text-pink-500 shadow-sm backdrop-blur">
                 <Heart size={18} />
               </button>
@@ -83,8 +119,8 @@ export default function AboutItem() {
           <div className="space-y-5">
             <div className="rounded-[28px] border border-gray-100 bg-white p-6 shadow-sm">
               <div className="mb-4 flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-pink-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-pink-500">
-                  {product.sub}
+                <span className="rounded-full bg-pink-400 px-3 py-1 text-xs font-semibold text-white">
+                  {product.category}
                 </span>
                 <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-600">
                   พร้อมส่ง
@@ -92,33 +128,32 @@ export default function AboutItem() {
               </div>
 
               <h1 className="text-3xl font-black text-gray-900">
-                {product.name}
+                {product?.product_name}
               </h1>
-              <p className="mt-2 text-sm text-gray-500">
-                น้ำหนักสุทธิ {product.weight}
-              </p>
-
-              <div className="mt-4 flex items-center gap-2 text-sm text-amber-500">
+              <div>
+                <p className='text-gray-400'>รายละเอียดสินค้า : <span>{product?.description}</span></p>
+              </div>
+              {/* <div className="mt-4 flex items-center gap-2 text-sm text-amber-500">
                 {[...Array(5)].map((_, index) => (
                   <Star key={index} size={16} fill="currentColor" />
                 ))}
                 <span className="ml-1 font-semibold text-gray-600">
                   4.8 · 1.2k รีวิว
                 </span>
-              </div>
+              </div> */}
 
               <div className="mt-6 rounded-2xl bg-pink-50 p-4">
                 <div className="flex items-end gap-2">
                   <span className="text-4xl font-black text-pink-500">
-                    ฿{product.priceWhole}.{product.priceDecimal}
+                    ฿{product.price}
                   </span>
                   <span className="mb-1 rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-pink-500 shadow-sm">
-                    ลด 10%
+                    ลด {product.promotion}%
                   </span>
                 </div>
-                <p className="mt-2 text-sm text-gray-600">
+                {/* <p className="mt-2 text-sm text-gray-600">
                   ราคานี้มีส่วนลดพิเศษสำหรับลูกค้าใหม่
-                </p>
+                </p> */}
               </div>
 
               <div className="mt-5 flex items-center gap-3">
@@ -142,22 +177,22 @@ export default function AboutItem() {
                 <span className="text-sm text-gray-500">เลือกจำนวนสินค้า</span>
               </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-3">
-  {/* ปุ่มซื้อเลย */}
-  <Link href="/payment" className="w-full">
-    <button className="flex w-full items-center justify-center gap-2 rounded-2xl bg-pink-500 px-4 py-3.5 font-semibold text-white shadow-lg shadow-pink-200 transition hover:bg-pink-600">
-      ซื้อเลย
-    </button>
-  </Link>
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                {/* ปุ่มซื้อเลย */}
+                <Link href="/payment" className="w-full">
+                  <button className="flex w-full items-center justify-center gap-2 rounded-2xl bg-pink-500 px-4 py-3.5 font-semibold text-white shadow-lg shadow-pink-200 transition hover:bg-pink-600">
+                    ซื้อเลย
+                  </button>
+                </Link>
 
-  {/* ปุ่มเพิ่มลงตะกร้า */}
-  <button className="flex w-full items-center justify-center gap-2 rounded-2xl border border-gray-500 px-4 py-3.5 font-semibold text-gray-500 transition hover:border-pink-600 hover:bg-pink-600 hover:text-white">
-    <ShoppingCart size={18} />
-    เพิ่มลงตะกร้า
-  </button>
-</div>
-             
-            
+                {/* ปุ่มเพิ่มลงตะกร้า */}
+                <button className="flex w-full items-center justify-center gap-2 rounded-2xl border border-gray-500 px-4 py-3.5 font-semibold text-gray-500 transition hover:border-pink-600 hover:bg-pink-600 hover:text-white">
+                  <ShoppingCart size={18} />
+                  เพิ่มลงตะกร้า
+                </button>
+              </div>
+
+
               <div className="mt-6 grid gap-3 text-sm text-gray-600 sm:grid-cols-3">
                 <div className="rounded-2xl border border-gray-100 bg-gray-50 p-3">
                   <ShieldCheck size={16} className="mb-2 text-emerald-500" />

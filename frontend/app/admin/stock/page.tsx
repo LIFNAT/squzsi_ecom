@@ -11,6 +11,7 @@ export interface propsgetProduct {
     current_product: number
     producy_image: string[]
     created_at : number
+    status : string
 }
 
 async function getProduct() {

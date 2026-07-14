@@ -19,10 +19,21 @@ export default function StockPage({ response }: propsStockPage) {
   })
 
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
 
-  const filteredResponse = (response ?? []).filter((item) =>
-    item.product_name?.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredResponse = (response ?? []).filter((item) => {
+    const matchSearch =
+      item.product_name
+        ?.toLowerCase()
+        .includes(search.toLowerCase());
+
+    const matchCategory =
+      !categoryFilter ||
+      item.category === categoryFilter;
+
+    return matchSearch && matchCategory;
+  });
 
   return (
     <div className="relative min-h-screen bg-[#FFF8FB] py-10 px-4 sm:px-6">
@@ -78,6 +89,8 @@ export default function StockPage({ response }: propsStockPage) {
             response={response}
             search={search}
             setSearch={setSearch}
+            categoryFilter={categoryFilter}
+            setCategoryFilter={setCategoryFilter}
           />
 
           <StockTable

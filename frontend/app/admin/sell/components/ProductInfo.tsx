@@ -21,9 +21,9 @@ export default function ProductInfo({ statetextadd, setstatetextadd }: propsProd
     { title: 'Vegetable' },
     { title: 'Snacks & Breads' },
     { title: 'Fruits' },
-    { title: 'Cute Accessories' },
+    { title: 'Chicken legs' },
+    { title: 'Milk & Dairy' },
   ]
-
   return (
     <section className="bg-white rounded-3xl shadow-sm shadow-pink-100/60 border border-pink-50 p-6 flex flex-col gap-5">
       <h2 className="text-base font-extrabold text-gray-700 flex items-center gap-2">

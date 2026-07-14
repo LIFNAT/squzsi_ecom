@@ -1,24 +1,35 @@
-'use client'
+import { post } from "@/app/post";
+import Control from "./componentspage/control";
 
-import Categories from "./componentspage/Categories";
-import FeaturedProducts from "./componentspage/FeaturedProducts";
-import HeroSection from "./componentspage/HeroSection";
-import PromoBanner from "./componentspage/PromoBanner";
-import { motion } from 'motion/react'
+export interface propsgetProduct {
+    id: number
+    product_name: string
+    category: string
+    description: string
+    price: number
+    promotion: number
+    current_product: number
+    producy_image: string[]
+    created_at: number
+}
 
-export default function Homepage() {
+async function getdataproduct() {
+    const res = await fetch(`${post}/product/producthome`, { cache: 'no-store' })
+
+    const dataproduct = await res.json()
+
+    return dataproduct.data
+}
+
+export default async function Home() {
+
+    const respodaw: propsgetProduct[] = await getdataproduct()
+
     return (
-        <motion.div
-            animate={{ opacity: 1 }}
-            initial={{ opacity: 0 }}
-            className="relative flex flex-col min-h-screen">
+        <div className="relative flex flex-col min-h-screen">
             <main className="flex-1">
-                <HeroSection />
-                <FeaturedProducts />
-                <Categories />
-                <PromoBanner />
-               
+                <Control respodaw={respodaw} />
             </main>
-        </motion.div>
+        </div>
     )
 }

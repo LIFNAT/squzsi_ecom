@@ -5,9 +5,12 @@ interface propsStockTable {
   response: propsgetProduct[];
   search: string;
   setSearch: (value: string) => void;
+
+  categoryFilter: string;
+  setCategoryFilter: (value: string) => void;
 }
 
-export default function StockToolbar({ response, setSearch, search }: propsStockTable) {
+export default function StockToolbar({ response, categoryFilter, setCategoryFilter, setSearch, search }: propsStockTable) {
   const selectCls =
     "px-3 py-2 rounded-2xl border border-pink-200 bg-white text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-300 hover:border-pink-300 transition-all duration-200";
 
@@ -46,16 +49,18 @@ export default function StockToolbar({ response, setSearch, search }: propsStock
 
       {/* กรองสถานะสต็อก */}
       <select
-        id="stock-filter-status"
-        // value={statusFilter}
-        // onChange={(e) => onStatus(e.target.value)}
+        id="stock-filter-category"
+        value={categoryFilter}
+        onChange={(e) => setCategoryFilter(e.target.value)}
         className={selectCls}
       >
-        <option value="">ทุกสถานะ</option>
-        <option value="in_stock">In Stock</option>
-        <option value="low_stock">Low Stock</option>
-        <option value="out_of_stock">Out of Stock</option>
-        <option value="hidden">Hidden</option>
+        <option value="">ทุกหมวดหมู่</option>
+
+        {CATEGORIES.map((c) => (
+          <option key={c} value={c}>
+            {c}
+          </option>
+        ))}
       </select>
 
       {/* เรียงลำดับ */}

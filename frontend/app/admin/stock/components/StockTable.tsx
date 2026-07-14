@@ -72,7 +72,7 @@ export default function StockTable({ response }: propsStockTable) {
                 </td>
 
                 <td className="py-2 pr-4">
-                  {item.status || "0"}
+                  {item?.status || "พร้อมจัดส่ง"}
                 </td>
 
                 <td className="py-2 pr-4 text-center">
