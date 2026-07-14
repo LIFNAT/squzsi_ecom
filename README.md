@@ -72,6 +72,12 @@
 
 ---
 System Architecture
+
+---
+Class Diagram
+<img width="923" height="1480" alt="Untitled Diagram drawio" src="https://github.com/user-attachments/assets/9ea4bfe0-7014-4b74-b1c2-99079efdc598" />
+
+---
 <img width="522" height="1809" alt="t" src="https://github.com/user-attachments/assets/e80f2d4b-0492-45a6-bac1-44ccc901d53a" />
 --
 Markdown จัดทำเอกสาร README.md หรือใชšใน HTML

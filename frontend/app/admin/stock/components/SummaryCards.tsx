@@ -1,44 +1,46 @@
-import { Product, getStockStatus } from "../types";
+import { propsgetProduct } from "../page";
 
-// =====================
-// Summary Cards — 4 การ์ดสรุปสต็อกที่หัวหน้า
-// คำนวณใหม่ทุกครั้งที่ products เปลี่ยน
-// =====================
+interface propsSummaryCards {
+  response: propsgetProduct[]
+}
 
-export default function SummaryCards({ products }: { products: Product[] }) {
-  const totalStock = products.reduce((sum, p) => sum + p.stock, 0);
-  const lowStockCount = products.filter(
-    (p) => getStockStatus(p) === "low_stock"
-  ).length;
-  const outOfStockCount = products.filter(
-    (p) => getStockStatus(p) === "out_of_stock"
-  ).length;
+export default function SummaryCards({ response }: propsSummaryCards) {
+
+  const producttotol = response.length
+
+  const totalCurrentProduct = response.reduce(
+    (sum, item) => sum + (item.current_product ?? 0),
+    0
+  );
+
+  const productex = response.filter(p => (p.current_product ?? 0) < 5).length
+  const Out_of_stock = response.filter(p => (p.current_product ?? 0) <= 0).length
 
   const cards = [
     {
       label: "สินค้าทั้งหมด",
-      value: products.length,
+      value: producttotol,
       icon: "🧸",
       color: "bg-pink-50 border-pink-100",
       textColor: "text-pink-500",
     },
     {
       label: "สต็อกรวม",
-      value: totalStock.toLocaleString(),
+      value: totalCurrentProduct,
       icon: "📦",
       color: "bg-purple-50 border-purple-100",
       textColor: "text-purple-500",
     },
     {
       label: "สต็อกใกล้หมด",
-      value: lowStockCount,
+      value: productex,
       icon: "⚠️",
       color: "bg-yellow-50 border-yellow-100",
       textColor: "text-yellow-600",
     },
     {
       label: "หมดสต็อก",
-      value: outOfStockCount,
+      value: Out_of_stock,
       icon: "❌",
       color: "bg-red-50 border-red-100",
       textColor: "text-red-500",

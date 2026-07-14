@@ -1,24 +1,20 @@
-import React from "react";
-import { FormData, FormErrors } from "./types";
+import { propsstatetextadd } from "../page";
 import { Field, inputClass } from "./Field";
 
-// =====================
-// ราคาและสต็อก
-// =====================
-
-interface PriceStockProps {
-  form: FormData;
-  errors: FormErrors;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  disabled?: boolean;
+interface propsPriceStock {
+  statetextadd: propsstatetextadd
+  setstatetextadd: React.Dispatch<React.SetStateAction<propsstatetextadd>>;
 }
+export default function PriceStock({ statetextadd, setstatetextadd }: propsPriceStock) {
 
-export default function PriceStock({
-  form,
-  errors,
-  onChange,
-  disabled,
-}: PriceStockProps) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setstatetextadd(prve => ({
+      ...prve,
+      [name]: value
+    }))
+  }
+
   return (
     <section className="bg-white rounded-3xl shadow-sm shadow-pink-100/60 border border-pink-50 p-6 flex flex-col gap-5">
       <h2 className="text-base font-extrabold text-gray-700 flex items-center gap-2">
@@ -28,22 +24,20 @@ export default function PriceStock({
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* ราคาปกติ */}
-        <Field label="ราคา (บาท)" required error={errors.price}>
+        <Field label="ราคา (บาท)" >
           <div className="relative">
             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-gray-400 font-semibold">
               ฿
             </span>
             <input
-              id="product-price"
               type="number"
-              name="price"
-              value={form.price}
-              onChange={onChange}
               placeholder="0.00"
+              name="price"
+              value={statetextadd.price || ''}
+              onChange={handleChange}
               min="0"
               step="0.01"
-              className={`${inputClass(errors.price)} pl-8`}
-              disabled={disabled}
+              className={`${inputClass()} pl-8`}
             />
           </div>
         </Field>
@@ -55,32 +49,28 @@ export default function PriceStock({
               ฿
             </span>
             <input
-              id="product-discount-price"
               type="number"
-              name="discountPrice"
-              value={form.discountPrice}
-              onChange={onChange}
+              name="promotion"
+              value={statetextadd.promotion || ''}
+              onChange={handleChange}
               placeholder="0.00"
               min="0"
               step="0.01"
               className={`${inputClass()} pl-8`}
-              disabled={disabled}
             />
           </div>
         </Field>
 
         {/* จำนวนสต็อก */}
-        <Field label="จำนวนสต็อก" required error={errors.stock}>
+        <Field label="จำนวนสต็อก" >
           <input
-            id="product-stock"
             type="number"
-            name="stock"
-            value={form.stock}
-            onChange={onChange}
+            name="current_product"
+            value={statetextadd.current_product || ""}
+            onChange={handleChange}
             placeholder="0"
             min="0"
-            className={inputClass(errors.stock)}
-            disabled={disabled}
+            className={`${inputClass()} pl-8`}
           />
         </Field>
       </div>

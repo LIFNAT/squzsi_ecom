@@ -1,15 +1,24 @@
+import 'dotenv/config'
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
+import { cors } from 'hono/cors'
+import { connectDB } from './DB/db.js'
+import product from './router/product.js'
+import addproduct from './router/addproduct.js'
 
 const app = new Hono()
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+await connectDB()
 
-serve({
-  fetch: app.fetch,
-  port: 3000
-}, (info) => {
-  console.log(`Server is running on http://localhost:${info.port}`)
-})
+app.use('/*', cors({
+  origin: 'http://localhost:3000',
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+}))
+
+app.route('/product', product)
+app.route('/addproduct',addproduct)
+
+const port = Number(process.env.PORT)
+
+console.log(`Server is running on http://localhost:${port}`)
+serve({ fetch: app.fetch, port })

@@ -23,11 +23,11 @@ export default function HeroSection() {
               <span className="absolute -bottom-1 left-0 w-full h-3 bg-pink-200/60 rounded-full -z-0" />
             </span>
             <br />
-        
+
           </h1>
 
           <p className="text-lg text-gray-500 max-w-md leading-relaxed">
-            Discover adorable squishies and kawaii toys that brighten your day. Handpicked for maximum cuteness and joy. 🌸
+            พบกับสกุชชี่และของเล่นสไตล์คาวาอี้สุดน่ารักที่จะช่วยเติมความสดใสให้วันของคุณ สินค้าทุกชิ้นผ่านการคัดสรรมาเป็นพิเศษเพื่อมอบความน่ารักและความสุขเต็มเปี่ยม. 🌸
           </p>
 
           <div className="flex flex-wrap items-center gap-4 pt-2">
@@ -35,13 +35,13 @@ export default function HeroSection() {
               href="#featured"
               className="px-8 py-3.5 bg-pink-400 text-white font-bold rounded-full shadow-lg shadow-pink-200/60 hover:bg-pink-500 hover:shadow-pink-300/70 hover:-translate-y-0.5 active:scale-95 transition-all duration-300 text-sm"
             >
-              Shop Now
+              ช้อปเลย
             </a>
             <a
               href="#categories"
               className="px-8 py-3.5 bg-white text-pink-500 font-bold rounded-full border-2 border-pink-200 hover:border-pink-400 hover:bg-pink-50 hover:-translate-y-0.5 active:scale-95 transition-all duration-300 text-sm shadow-sm"
             >
-              View Collection
+              ดูคอลเลกชัน
             </a>
           </div>
 
@@ -68,7 +68,7 @@ export default function HeroSection() {
           {/* Main image container */}
           <div className="relative z-10 w-[320px] h-[320px] md:w-[420px] md:h-[420px] rounded-3xl overflow-hidden shadow-2xl shadow-pink-200/50 border-4 border-white">
             <img
-              src="https://placehold.co/840x840/FFDCE8/FF8FB1?text=🧸+Kawaii+Squishies&font=playfair"
+              src="/mqytoljtgeYfW558jDS-o.jpg"
               alt="Kawaii squishies collection hero"
               className="w-full h-full object-cover"
             />
