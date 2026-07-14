@@ -81,6 +81,10 @@ Class Diagram
 <img width="923" height="1480" alt="Untitled Diagram drawio" src="https://github.com/user-attachments/assets/291e3818-2e88-46d0-904e-382cb3639fb9" />
 
 ---
+sequen diagram
+<img width="2054" height="1832" alt="743588549_1563011262124450_3602962959604450398_n" src="https://github.com/user-attachments/assets/5b4fee88-8e4d-4727-8d43-cf67f7160061" />
+
+---
 <img width="522" height="1809" alt="t" src="https://github.com/user-attachments/assets/e80f2d4b-0492-45a6-bac1-44ccc901d53a" />
 --
 Markdown จัดทำเอกสาร README.md หรือใชšใน HTML
