@@ -1,6 +1,6 @@
 export default function HeroSection() {
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-br from-pink-50 via-white to-rose-50 min-h-[88vh] flex items-center">
+    <section className="relative w-full overflow-hidden   min-h-[88vh] flex items-center">
       {/* Decorative background blobs */}
       <div className="absolute top-[-80px] right-[-80px] w-[420px] h-[420px] bg-pink-200/30 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-[-60px] left-[-60px] w-[320px] h-[320px] bg-rose-200/20 rounded-full blur-3xl pointer-events-none" />
@@ -9,9 +9,9 @@ export default function HeroSection() {
 
 
 
-      <div className="relative max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center w-full">
+      <div className="relative max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center w-full ">
         {/* Left: Text */}
-        <div className="flex flex-col items-start gap-6">
+        <div className="flex flex-col items-start gap-6 pl-5">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-100 text-pink-500 text-xs font-semibold tracking-wider uppercase">
             ✨ คอลเลคชั่นใหม่ 2026
           </span>
@@ -84,9 +84,10 @@ export default function HeroSection() {
           </div>
 
           {/* Floating tag */}
-          <div className="absolute top-6 -right-4 z-20 bg-pink-400 text-white rounded-2xl px-4 py-2 shadow-lg shadow-pink-300/50 text-xs font-bold">
-            New Arrivals 🌸
-          </div>
+       <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 rounded-full bg-pink-500 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-white shadow-md shadow-pink-500/25">
+  <span>New Arrivals</span>
+  <span>🌸</span>
+</div>
         </div>
       </div>
     </section>

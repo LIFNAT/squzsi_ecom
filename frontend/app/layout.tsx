@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
-import { Itim } from "next/font/google";
+import { Prompt } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FloatingCircles from "./components/FloatingCircles";
 
 // 1. ตั้งค่าฟอนต์
-const itim = Itim({
+const prompt = Prompt({
   subsets: ["latin", "thai"],
-  weight: "400",
+  // ฟอนต์ Modern มักจะต้องใช้หลายความหนา (Weight) ในการจัด UI ให้สวยงาม
+  weight: ["300", "400", "500", "600", "700"], 
   display: "swap",
-  variable: "--font-itim", // กำหนดตัวแปร CSS สำหรับเรียกใช้
+  variable: "--font-prompt", 
 });
 
 export const metadata: Metadata = {
@@ -40,8 +41,8 @@ export default function RootLayout({
 }>) {
   return (
     // 2. นำ class ของฟอนต์มาใส่ที่ html เพื่อให้มีผลทั้งเว็บ
-    <html lang="en" className={`h-full antialiased ${itim.variable} font-sans`}>
-      <body className={`min-h-full flex flex-col bg-[#FFF8FB] ${itim.className}`}>
+    <html lang="en" className={`h-full antialiased ${prompt.variable}`}>
+      <body className={`min-h-full flex flex-col bg-[#FFF8FB] ${prompt.className}`}>
         <Navbar /> 
         <main className="flex-grow">
           {children}

@@ -7,22 +7,26 @@ import Link from "next/link";
 import { categories, products, type Product } from "@/app/data/mockProducts";
 
 function ProductCard({ product }: { product: Product }) {
-
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-4 flex flex-col h-full">
       <div className="relative w-full md:h-[200px] h-[300px]">
-        <Image src={product.emoji} alt="" fill className="object-cover" />
+        <Image
+          src={product.emoji}
+          alt=""
+          fill
+          className="object-cover rounded-2xl"
+        />
       </div>
-      <div className="text-[15px] font-semibold text-gray-900 leading-snug">
+      <div className="text-[15px] font-semibold text-gray-900 leading-snug mt-5">
         <h2>{product.name} </h2>
         <span className="font-normal text-gray-500 text-[14px]">
           {product.sub}
         </span>
       </div>
       <div className="text-xs text-gray-400 mt-1 mb-2">{product.weight}</div>
-      <div className="text-emerald-600 font-bold text-lg mb-4">
+      <div className="text-emerald-600 text-2xl font-bold  mb-4">
         {product.priceWhole}
-        <span className="text-sm align-top">.{product.priceDecimal}$</span>
+        <span className="text-sm align-top ml-1">$</span>
       </div>
 
       <div className="mt-auto w-full">
@@ -85,16 +89,18 @@ export default function AllItem() {
             <span className="text-xs text-gray-400">{cat.sub}</span>
           </button>
         ))}
-        <button className="bg-lime-400 hover:bg-lime-300 cursor-pointer transition-colors rounded-2xl flex flex-col items-center justify-center gap-1">
-          <ChevronRight className="text-emerald-950" size={20} />
-          <span className="text-xs font-semibold text-emerald-950">
-            ดูทั้งหมด
-          </span>
-        </button>
+        <Link
+          href="/Home/item"
+          className="bg-white rounded-2xl border cursor-pointer duration-200 border-gray-100 p-4 flex flex-col items-start text-left hover:border-emerald-300 transition-colors"
+        >
+          <span className="text-2xl mb-2">🛒</span>
+          <span className="text-sm font-semibold text-gray-900">All Items</span>
+          <span className="text-xs text-gray-400">ดูสินค้าทั้งหมด</span>
+        </Link>
       </div>
 
       {/* You might need */}
-      <div className="flex items-center justify-between mt-10 mb-4">
+      <div className="flex items-center justify-between mt-10 mb-4 ">
         <h2 className="text-xl font-bold text-gray-900">You might need</h2>
         <a
           href="#"

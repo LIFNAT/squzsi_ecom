@@ -53,16 +53,13 @@ export default function Navbar() {
           </button>
 
           {/* Cart */}
-          <button
-            aria-label="Cart"
-            className="p-2 rounded-full text-gray-500 cursor-pointer hover:text-pink-500 hover:bg-pink-50 transition-all duration-200 relative"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13M7 13l-1-4m5 4v6m4-6v6" />
-            </svg>
-            <span className="absolute top-1 right-1 h-2 w-2 bg-pink-400 rounded-full"></span>
-          </button>
 
+        <Link href="/cart"  className="p-2 rounded-full text-gray-500 cursor-pointer hover:text-pink-500 hover:bg-pink-50 transition-all duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13M7 13l-1-4m5 4v6m4-6v6" />
+          </svg>
+          <span className="absolute top-1 right-1 h-2 w-2 bg-pink-400 rounded-full"></span>
+        </Link>
           {/* Login */}
           <a
             href="#"
