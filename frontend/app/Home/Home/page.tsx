@@ -1,4 +1,5 @@
 import { post } from "@/app/post";
+import { products as fallbackProducts } from "@/app/data/mockProducts";
 import Control from "./componentspage/control";
 
 export interface propsgetProduct {
@@ -13,12 +14,36 @@ export interface propsgetProduct {
     created_at: number
 }
 
-async function getdataproduct() {
-    const res = await fetch(`${post}/product/producthome`, { cache: 'no-store' })
+const fallbackProductData: propsgetProduct[] = fallbackProducts.slice(0, 8).map((item, index) => ({
+    id: index + 1,
+    product_name: item.name,
+    category: item.category,
+    description: item.description,
+    price: Number(item.priceWhole) || 0,
+    promotion: 0,
+    current_product: 1,
+    producy_image: item.emoji ? [item.emoji] : [],
+    created_at: Date.now() + index,
+}));
 
-    const dataproduct = await res.json()
+async function getdataproduct(): Promise<propsgetProduct[]> {
+    try {
+        const res = await fetch(`${post}/product/producthome`, { cache: 'no-store' })
 
-    return dataproduct.data
+        if (!res.ok) {
+            throw new Error(`Request failed with status ${res.status}`)
+        }
+
+        const dataproduct = await res.json()
+
+        if (Array.isArray(dataproduct?.data)) {
+            return dataproduct.data as propsgetProduct[]
+        }
+    } catch (error) {
+        console.error('Failed to load products from API, using fallback data:', error)
+    }
+
+    return fallbackProductData
 }
 
 export default async function Home() {

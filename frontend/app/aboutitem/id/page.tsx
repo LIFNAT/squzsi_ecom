@@ -28,9 +28,40 @@ interface Product {
   producy_image: string[];
 }
 
+type FeatureItem = {
+  title: string;
+  description: string;
+  icon: typeof ShieldCheck;
+  iconClass: string;
+};
+
 import Image from "next/image";
 import Link from "next/link";
 import { getProductById, products } from "@/app/data/mockProducts";
+
+const featureItems: FeatureItem[] = [
+  {
+    title: "บรรจุภัณฑ์ปลอดภัย",
+    description:
+      "เราเข้าใจว่าคุณตั้งตารอของชิ้นนี้แค่ไหน ทุกกล่องจึงถูกแพ็กด้วยความระมัดระวังเป็นพิเศษ ป้องกันการกระแทกและเสียหาย เพื่อให้มั่นใจว่าของถึงมือคุณในสภาพที่สมบูรณ์ที่สุด",
+    icon: ShieldCheck,
+    iconClass: "text-emerald-500",
+  },
+  {
+    title: "ส่งด่วนทันใจ 3 วัน ",
+    description:
+      "เราจัดส่งไวภายใน 3 วันทำการ พร้อมส่งเลขแทร็กให้คุณดูได้ตลอดว่าพัสดุเดินทางไปถึงไหนแล้ว ไม่ต้องคอยลุ้นหรือเดาว่าของจะมาถึงเมื่อไหร่",
+    icon: Truck,
+    iconClass: "text-sky-500",
+  },
+  {
+    title: "คืนสินค้า",
+    description:
+      "คืนสินค้าได้ภายใน 7 วัน หากคุณไม่พอใจในสินค้าหรือพบปัญหาใด ๆ เราพร้อมรับคืนและคืนเงินให้คุณเต็มจำนวน ไม่มีเงื่อนไขซับซ้อน",
+    icon: RotateCcw,
+    iconClass: "text-violet-500",
+  },
+];
 
 export default function AboutItem() {
   const params = useParams();
@@ -41,6 +72,9 @@ export default function AboutItem() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const [selectedFeature, setSelectedFeature] = useState<FeatureItem | null>(
+    null,
+  );
 
   useEffect(() => {
     if (!id) return;
@@ -48,7 +82,7 @@ export default function AboutItem() {
     const loadProduct = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/product/getProductById/${id}`
+          `http://localhost:5000/product/getProductById/${id}`,
         );
 
         const data = await res.json();
@@ -64,7 +98,6 @@ export default function AboutItem() {
     };
     loadProduct();
   }, [id]);
-
 
   if (!product) {
     return (
@@ -102,7 +135,7 @@ export default function AboutItem() {
 
         <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
           <div className="rounded-[28px] border border-pink-100 bg-white p-4 shadow-[0_20px_60px_rgba(249,115,22,0.12)]">
-            <div className="relative aspect-square overflow-hidden rounded-[24px] bg-pink-50">
+            <div className="relative aspect-square overflow-hidden rounded-3xl bg-pink-50">
               <Image
                 src={product.producy_image[0]}
                 alt={product.product_name}
@@ -131,7 +164,9 @@ export default function AboutItem() {
                 {product?.product_name}
               </h1>
               <div>
-                <p className='text-gray-400'>รายละเอียดสินค้า : <span>{product?.description}</span></p>
+                <p className="text-gray-400">
+                  รายละเอียดสินค้า : <span>{product?.description}</span>
+                </p>
               </div>
               {/* <div className="mt-4 flex items-center gap-2 text-sm text-amber-500">
                 {[...Array(5)].map((_, index) => (
@@ -192,20 +227,23 @@ export default function AboutItem() {
                 </button>
               </div>
 
-
               <div className="mt-6 grid gap-3 text-sm text-gray-600 sm:grid-cols-3">
-                <div className="rounded-2xl border border-gray-100 bg-gray-50 p-3">
-                  <ShieldCheck size={16} className="mb-2 text-emerald-500" />
-                  ปลอดภัย 100%
-                </div>
-                <div className="rounded-2xl border border-gray-100 bg-gray-50 p-3">
-                  <Truck size={16} className="mb-2 text-sky-500" />
-                  ส่งไวภายใน 1 วัน
-                </div>
-                <div className="rounded-2xl border border-gray-100 bg-gray-50 p-3">
-                  <RotateCcw size={16} className="mb-2 text-violet-500" />
-                  คืนสินค้าได้
-                </div>
+                {featureItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <button
+                      key={item.title}
+                      type="button"
+                      onClick={() => setSelectedFeature(item)}
+                      className="rounded-2xl border border-gray-100 bg-gray-50 p-3 text-left transition hover:-translate-y-0.5 hover:border-pink-200 hover:bg-white"
+                    >
+                      <Icon size={16} className={`mb-2 ${item.iconClass}`} />
+                      <div className="font-medium text-gray-700">
+                        {item.title}
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -290,7 +328,7 @@ export default function AboutItem() {
               <Link
                 key={item.id}
                 href={`/aboutitem/${item.id}`}
-                className="rounded-[24px] border border-gray-100 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                className="rounded-3xl border border-gray-100 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
               >
                 <div className="relative mb-3 aspect-square overflow-hidden rounded-2xl bg-gray-50">
                   <Image
@@ -303,13 +341,45 @@ export default function AboutItem() {
                 <h3 className="font-semibold text-gray-900">{item.name}</h3>
                 <p className="mt-1 text-sm text-gray-500">{item.sub}</p>
                 <div className="mt-3 text-lg font-black text-pink-500">
-                  ฿{item.priceWhole}.{item.priceDecimal}
+                  ฿{item.priceWhole}
                 </div>
               </Link>
             ))}
           </div>
         </div>
       </div>
+
+      {selectedFeature && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+          onClick={() => setSelectedFeature(null)}
+        >
+          <div
+            className="w-full max-w-sm rounded-3xl border border-gray-200 bg-white p-5 shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center gap-2 text-pink-500">
+              {(() => {
+                const Icon = selectedFeature.icon;
+                return <Icon size={18} className={selectedFeature.iconClass} />;
+              })()}
+              <h3 className="text-lg font-semibold text-gray-900">
+                {selectedFeature.title}
+              </h3>
+            </div>
+            <p className="mt-3 text-sm leading-6 text-gray-600">
+              {selectedFeature.description}
+            </p>
+            <button
+              type="button"
+              onClick={() => setSelectedFeature(null)}
+              className="mt-4 rounded-full bg-pink-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-pink-600"
+            >
+              ปิด
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
