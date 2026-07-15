@@ -32,6 +32,12 @@ export interface Product {
 
 export const LOW_STOCK_THRESHOLD = 10;
 
+export const nearexproduct = [
+  'พร้อมจัดส่ง',
+  'ใกล้หมด',
+  'ไม่พร้อมกันส่ง'
+]
+
 export const CATEGORIES = [
   "Squishies",
   "Plushies",

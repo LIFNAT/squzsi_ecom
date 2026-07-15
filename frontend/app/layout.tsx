@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Itim } from "next/font/google";
+import { Kanit } from "next/font/google"; // 1. เปลี่ยนจาก Itim เป็น Kanit
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FloatingCircles from "./components/FloatingCircles";
 
 // 1. ตั้งค่าฟอนต์
-const itim = Itim({
+const kanit = Kanit({
   subsets: ["latin", "thai"],
-  weight: "400",
+  weight: "600",
   display: "swap",
   variable: "--font-itim", // กำหนดตัวแปร CSS สำหรับเรียกใช้
 });
@@ -40,8 +40,8 @@ export default function RootLayout({
 }>) {
   return (
     // 2. นำ class ของฟอนต์มาใส่ที่ html เพื่อให้มีผลทั้งเว็บ
-    <html lang="en" className={`h-full antialiased ${itim.variable} font-sans`}>
-      <body className={`min-h-full flex flex-col bg-[#FFF8FB] ${itim.className}`}>
+    <html lang="en" className={`h-full antialiased ${kanit.variable} font-sans`}>
+      <body className={`min-h-full flex flex-col bg-[#FFF8FB] ${kanit.className}`}>
         <Navbar /> 
         <main className="flex-grow">
           {children}
