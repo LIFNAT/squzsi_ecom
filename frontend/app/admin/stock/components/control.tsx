@@ -19,9 +19,10 @@ export default function StockPage({ response }: propsStockPage) {
   })
 
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
+  const [statusFilter, setstatusFilter] = useState('')
 
+  //กรองข้อมูลใน table
   const filteredResponse = (response ?? []).filter((item) => {
     const matchSearch =
       item.product_name
@@ -32,7 +33,12 @@ export default function StockPage({ response }: propsStockPage) {
       !categoryFilter ||
       item.category === categoryFilter;
 
-    return matchSearch && matchCategory;
+    const nearexproductdata =
+      !statusFilter ||
+      item.status === statusFilter
+
+
+    return matchSearch && matchCategory && nearexproductdata;
   });
 
   return (
@@ -91,6 +97,9 @@ export default function StockPage({ response }: propsStockPage) {
             setSearch={setSearch}
             categoryFilter={categoryFilter}
             setCategoryFilter={setCategoryFilter}
+            setstatusFilter={setstatusFilter}
+            statusFilter={statusFilter}
+
           />
 
           <StockTable

@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
-import { Prompt } from "next/font/google";
+import { Kanit } from "next/font/google"; // 1. เปลี่ยนจาก Itim เป็น Kanit
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FloatingCircles from "./components/FloatingCircles";
 
 // 1. ตั้งค่าฟอนต์
-const prompt = Prompt({
+const kanit = Kanit({
   subsets: ["latin", "thai"],
-  // ฟอนต์ Modern มักจะต้องใช้หลายความหนา (Weight) ในการจัด UI ให้สวยงาม
-  weight: ["300", "400", "500", "600", "700"], 
+  weight: "600",
   display: "swap",
   variable: "--font-prompt", 
 });
@@ -41,8 +40,8 @@ export default function RootLayout({
 }>) {
   return (
     // 2. นำ class ของฟอนต์มาใส่ที่ html เพื่อให้มีผลทั้งเว็บ
-    <html lang="en" className={`h-full antialiased ${prompt.variable}`}>
-      <body className={`min-h-full flex flex-col bg-[#FFF8FB] ${prompt.className}`}>
+    <html lang="en" className={`h-full antialiased ${kanit.variable} font-sans`}>
+      <body className={`min-h-full flex flex-col bg-[#FFF8FB] ${kanit.className}`}>
         <Navbar /> 
         <main className="flex-grow">
           {children}
