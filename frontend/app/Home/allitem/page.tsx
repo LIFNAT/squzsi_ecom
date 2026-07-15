@@ -46,14 +46,32 @@ async function dataproduct(): Promise<propsgetProduct[]> {
   return fallbackProductData
 }
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    category?: string;
+  }>;
+}) {
 
-  const respobaw: propsgetProduct[] = await dataproduct()
+  const params = await searchParams;
+
+  const products = await dataproduct();
+
+  const category = params.category ?? "all";
+
+  const filterProducts =
+    category === "all"
+      ? products
+      : products.filter(
+          (item) => item.category === category
+        );
 
   return (
     <main>
       <AllItem
-        respobaw={respobaw}
+        respobaw={filterProducts}
+        category={category}
       />
     </main>
   );

@@ -1,36 +1,37 @@
+import Link from "next/link";
 const categories = [
   {
     id: 1,
-    name: "Squishies",
-    icon: "🧁",
-    description: "Soft & satisfying",
+    name: "Milk & Dairy",
+    icon: "🥛",
+    description: "Preserved food",
     color: "from-pink-100 to-rose-100",
     accent: "bg-pink-400",
     count: "120+ items",
   },
   {
     id: 2,
-    name: "Plushies",
-    icon: "🐻",
-    description: "Huggably cute",
+    name: "Vegetable",
+    icon: "🥦",
+    description: "Local market",
     color: "from-purple-100 to-pink-100",
     accent: "bg-purple-400",
     count: "85+ items",
   },
   {
     id: 3,
-    name: "Blind Box",
-    icon: "🎁",
-    description: "Surprise inside!",
+    name: "Snacks & Breads",
+    icon: "🥖",
+    description: "Sri-khen chimney",
     color: "from-yellow-100 to-pink-100",
     accent: "bg-yellow-400",
     count: "40+ series",
   },
   {
     id: 4,
-    name: "Cute Accessories",
-    icon: "🌸",
-    description: "Kawaii everyday",
+    name: "Fruits",
+    icon: "🍎",
+    description: "Central line",
     color: "from-blue-100 to-pink-100",
     accent: "bg-sky-400",
     count: "200+ items",
@@ -51,9 +52,13 @@ export default function Categories() {
         {/* Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
           {categories.map((cat) => (
-            <a
+            <Link
               key={cat.id}
-              href="#"
+              href={
+                cat.name === "all"
+                  ? "/Home/allitem"
+                  : `/Home/allitem?category=${encodeURIComponent(cat.name)}`
+              }
               className={`group relative rounded-3xl bg-gradient-to-br ${cat.color} p-6 flex flex-col items-center text-center gap-4 border border-white hover:shadow-xl hover:shadow-pink-100/50 hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer`}
             >
               {/* Background decoration */}
@@ -77,7 +82,7 @@ export default function Categories() {
               <span className={`relative z-10 text-white text-xs font-bold px-3 py-1 rounded-full ${cat.accent} opacity-80 group-hover:opacity-100 transition-opacity duration-200`}>
                 {cat.count}
               </span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
