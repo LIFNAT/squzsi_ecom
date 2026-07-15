@@ -13,24 +13,42 @@ export interface propsgetProduct {
   created_at: number
 }
 
-async function dataproduct() {
+async function dataproduct(): Promise<propsgetProduct[]> {
+  const res = await fetch(`${post}/product/select-products`, {
+    cache: "no-store",
+  });
 
-  const res = await fetch(`${post}/product/select-products`, { cache: 'no-store' })
+  const data = await res.json();
 
-  const dataproduct = await res.json()
-
-  return dataproduct.data
-
+  return data.data;
 }
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    category?: string;
+  }>;
+}) {
 
-  const respobaw: propsgetProduct[] = await dataproduct()
+  const params = await searchParams;
+
+  const products = await dataproduct();
+
+  const category = params.category ?? "all";
+
+  const filterProducts =
+    category === "all"
+      ? products
+      : products.filter(
+          (item) => item.category === category
+        );
 
   return (
     <main>
       <AllItem
-        respobaw={respobaw}
+        respobaw={filterProducts}
+        category={category}
       />
     </main>
   );

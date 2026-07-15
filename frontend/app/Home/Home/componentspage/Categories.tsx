@@ -1,3 +1,4 @@
+import Link from "next/link";
 const categories = [
   {
     id: 1,
@@ -51,7 +52,7 @@ export default function Categories() {
         {/* Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
           {categories.map((cat) => (
-            <a
+            <Link
               key={cat.id}
               href="#"
               className={`group relative rounded-3xl bg-gradient-to-br ${cat.color} p-6 flex flex-col items-center text-center gap-4 border border-white hover:shadow-xl hover:shadow-pink-100/50 hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer`}
@@ -77,7 +78,7 @@ export default function Categories() {
               <span className={`relative z-10 text-white text-xs font-bold px-3 py-1 rounded-full ${cat.accent} opacity-80 group-hover:opacity-100 transition-opacity duration-200`}>
                 {cat.count}
               </span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

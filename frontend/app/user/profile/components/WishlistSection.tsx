@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "lucide-react";
 import { useState } from "react";
 
 export interface WishlistItem {
@@ -29,12 +30,12 @@ export default function WishlistSection({ items: initial }: Props) {
           <div className="text-5xl mb-3">🫶</div>
           <p className="font-medium">ยังไม่มีสินค้าที่ถูกใจ</p>
           <p className="text-sm mt-1">กดหัวใจบนสินค้าที่ชอบเพื่อบันทึกไว้ที่นี่</p>
-          <a
+          <Link
             href="/Home/allitem"
             className="inline-block mt-4 px-6 py-2 bg-pink-400 text-white rounded-full text-sm hover:bg-pink-500 transition-colors"
           >
             ไปช้อปเลย 🛍️
-          </a>
+          </Link>
         </div>
       </div>
     );

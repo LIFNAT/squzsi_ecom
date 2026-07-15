@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import 'dotenv/config'
 import { pool } from "../DB/db.js";
-import { producthome,getProductById } from "../controllers/dbproduct.js";
+import { producthome,getProductById, getproductLimitThree } from "../controllers/dbproduct.js";
 
 const product = new Hono()
 
@@ -32,5 +32,6 @@ product.get('/select-products', async (c) => {
 
 product.get('/producthome' , producthome)
 product.get('/getProductById/:id',  getProductById)
+product.get('/getproductLimitThree' , getproductLimitThree)
 
 export default product

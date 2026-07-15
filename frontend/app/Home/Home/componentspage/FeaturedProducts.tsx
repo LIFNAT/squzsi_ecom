@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { propsgetProduct } from "../page";
 
 interface prosFeaturedProducts {
@@ -76,12 +77,12 @@ export default function FeaturedProducts({ respodaw }: prosFeaturedProducts) {
 
         {/* View All */}
         <div className="flex justify-center mt-12">
-          <a
-            href="#"
+          <Link
+            href="/Home/allitem"
             className="px-8 py-3 bg-pink-50 text-pink-500 font-bold rounded-full border-2 border-pink-200 hover:bg-pink-400 hover:text-white hover:border-pink-400 hover:-translate-y-0.5 transition-all duration-300 text-sm"
           >
             ดูสินค้าทั้งหมด →
-          </a>
+          </Link>
         </div>
       </div>
     </section>

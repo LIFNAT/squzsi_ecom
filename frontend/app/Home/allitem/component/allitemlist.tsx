@@ -6,13 +6,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { propsgetProduct } from "../page";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface propsProductCard {
   respobaw: propsgetProduct[];
+  category: string;
 }
 
 export const categories = [
-  { name: "all", emoji: "🛍️" , sub : 'รายการทั้งหมด' },
+  { name: "all", emoji: "🛍️", sub: 'รายการทั้งหมด' },
   { name: "Vegetable", sub: "Local market", emoji: "🥦" },
   { name: "Snacks & Breads", sub: "Sri-khen chimney", emoji: "🥖" },
   { name: "Fruits", sub: "Central line", emoji: "🍎" },
@@ -20,15 +22,28 @@ export const categories = [
   { name: "Milk & Dairy", sub: "Preserved food", emoji: "🥛" },
 ];
 
-export default function AllItem({ respobaw }: propsProductCard) {
+export default function AllItem({ respobaw, category }: propsProductCard) {
 
-  const [selectcategor, setselectcategor] = useState('all')
+  // const [selectcategor, setselectcategor] = useState('all')
 
-  const filterProducts = selectcategor === 'all'
-  ? respobaw
-  : respobaw.filter(
-    (i)=>i.category === selectcategor
-  )
+  // const filterProducts = selectcategor === 'all'
+  //   ? respobaw
+  //   : respobaw.filter(
+  //     (i) => i.category === selectcategor
+  //   )
+
+  const filterProducts =
+    category === "all"
+      ? respobaw
+      : respobaw.filter(
+        (i) => i.category === category
+      );
+
+  console.log("category from URL =", category);
+  console.log(
+    "categories in DB =",
+    respobaw.map((i) => i.category)
+  );
 
   return (
     <motion.div
@@ -64,17 +79,25 @@ export default function AllItem({ respobaw }: propsProductCard) {
       {/* Categories */}
       <div className="grid grid-cols-3 sm:grid-cols-7 gap-3 mt-8">
         {categories.map((cat) => (
-          <button
+          <Link
             key={cat.name}
-            onClick={()=>setselectcategor(cat.name)}
+            href={
+              cat.name === "all"
+                ? "/Home/allitem"
+                : `/Home/allitem?category=${encodeURIComponent(cat.name)}`
+            }
             className="bg-white rounded-2xl border cursor-pointer duration-200 border-gray-100 p-4 flex flex-col items-start text-left hover:border-emerald-300 transition-colors"
           >
             <span className="text-2xl mb-2">{cat.emoji}</span>
+
             <span className="text-sm font-semibold text-gray-900">
               {cat.name}
             </span>
-            <span className="text-xs text-gray-400">{cat.sub}</span>
-          </button>
+
+            <span className="text-xs text-gray-400">
+              {cat.sub}
+            </span>
+          </Link>
         ))}
         <Link
           href="/Home/item"
@@ -89,12 +112,12 @@ export default function AllItem({ respobaw }: propsProductCard) {
       {/* You might need */}
       <div className="flex items-center justify-between mt-10 mb-4 ">
         <h2 className="text-xl font-bold text-gray-900">You might need</h2>
-        <a
-          href="#"
+        <Link
+          href="/Home/item"
           className="text-sm font-medium text-emerald-600 flex items-center gap-1 hover:text-emerald-700"
         >
-          See more <ChevronRight size={14} />
-        </a>
+          See more
+        </Link>
       </div>
 
       <div className="grid md:grid-cols-4 grid-cols-1 gap-4">
@@ -110,16 +133,16 @@ export default function AllItem({ respobaw }: propsProductCard) {
                     alt={e.product_name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
 
-                          <div className="absolute inset-0 flex justify-end p-3">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-8 h-8 p-2  bg-gray-50 text-gray-300  rounded-full group-hover:bg-pink-400 group-hover:text-white duration-300"
-                      >
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                      </svg>
-                    </div>
+                  <div className="absolute inset-0 flex justify-end p-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="w-8 h-8 p-2  bg-gray-50 text-gray-300  rounded-full group-hover:bg-pink-400 group-hover:text-white duration-300"
+                    >
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                  </div>
                 </div>
 
                 <div className="p-3">
@@ -140,8 +163,8 @@ export default function AllItem({ respobaw }: propsProductCard) {
                       ${e.price}
                     </span>
 
-                    <Link 
-                    href={`/aboutitem/${e.id}`}
+                    <Link
+                      href={`/aboutitem/${e.id}`}
                       className="px-4 py-2 rounded-full text-xs font-bold bg-pink-500 text-white hover:bg-pink-600 cursor-pointer transition-all duration-300 active:scale-95"
                     >
                       ดูสินค้า
