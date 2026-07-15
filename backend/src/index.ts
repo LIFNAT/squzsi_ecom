@@ -5,7 +5,6 @@ import { cors } from 'hono/cors'
 import { connectDB } from './DB/db.js'
 import product from './router/product.js'
 import addproduct from './router/addproduct.js'
-
 const app = new Hono()
 
 await connectDB()

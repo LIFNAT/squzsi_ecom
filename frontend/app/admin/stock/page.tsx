@@ -15,10 +15,17 @@ export interface propsgetProduct {
 }
 
 async function getProduct() {
-    const res = await fetch(`${post}/product/select-products`, { cache: 'no-store' })
+    if (!post) throw new Error('API base URL is not configured (post is empty)');
+
+    const url = `${post}/product/select-products`;
+    const res = await fetch(url, { cache: 'no-store' });
+
+    if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(`Failed to fetch products from ${url}. Status ${res.status}. ${text}`);
+    }
 
     const data = await res.json();
-
     return data.data;
 }
 
