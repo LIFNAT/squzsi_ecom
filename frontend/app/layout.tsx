@@ -10,7 +10,7 @@ const kanit = Kanit({
   subsets: ["latin", "thai"],
   weight: "600",
   display: "swap",
-  variable: "--font-itim", // กำหนดตัวแปร CSS สำหรับเรียกใช้
+  variable: "--font-prompt", 
 });
 
 export const metadata: Metadata = {

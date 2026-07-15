@@ -76,16 +76,18 @@ export default function AllItem({ respobaw }: propsProductCard) {
             <span className="text-xs text-gray-400">{cat.sub}</span>
           </button>
         ))}
-        <button className="bg-lime-400 hover:bg-lime-300 cursor-pointer transition-colors rounded-2xl flex flex-col items-center justify-center gap-1">
-          <ChevronRight className="text-emerald-950" size={20} />
-          <span className="text-xs font-semibold text-emerald-950">
-            ดูทั้งหมด
-          </span>
-        </button>
+        <Link
+          href="/Home/item"
+          className="bg-white rounded-2xl border cursor-pointer duration-200 border-gray-100 p-4 flex flex-col items-start text-left hover:border-emerald-300 transition-colors"
+        >
+          <span className="text-2xl mb-2">🛒</span>
+          <span className="text-sm font-semibold text-gray-900">All Items</span>
+          <span className="text-xs text-gray-400">ดูสินค้าทั้งหมด</span>
+        </Link>
       </div>
 
       {/* You might need */}
-      <div className="flex items-center justify-between mt-10 mb-4">
+      <div className="flex items-center justify-between mt-10 mb-4 ">
         <h2 className="text-xl font-bold text-gray-900">You might need</h2>
         <a
           href="#"

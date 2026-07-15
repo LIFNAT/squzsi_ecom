@@ -10,7 +10,6 @@ export type Product = {
   sub: string;
   weight: string;
   priceWhole: string;
-  priceDecimal: string;
   emoji: string;
   description: string;
   category: string;
@@ -31,7 +30,7 @@ export const products: Product[] = [
     sub: "(Local shop)",
     weight: "500 gm.",
     priceWhole: "17",
-    priceDecimal: "29",
+    
     emoji:
       "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
     description:
@@ -44,7 +43,6 @@ export const products: Product[] = [
     sub: "(Local shop)",
     weight: "500 gm.",
     priceWhole: "12",
-    priceDecimal: "29",
     emoji:
       "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
     description:
@@ -57,7 +55,7 @@ export const products: Product[] = [
     sub: "(Process food)",
     weight: "500 gm.",
     priceWhole: "14",
-    priceDecimal: "29",
+   
     emoji:
       "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
     description:
@@ -70,7 +68,7 @@ export const products: Product[] = [
     sub: "(Cut Bone)",
     weight: "600 gm.",
     priceWhole: "16",
-    priceDecimal: "29",
+    
     emoji:
       "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
     description:
@@ -83,7 +81,7 @@ export const products: Product[] = [
     sub: "(Sprite)",
     weight: "500 gm.",
     priceWhole: "18",
-    priceDecimal: "29",
+   
     emoji:
       "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
     description:
@@ -96,7 +94,7 @@ export const products: Product[] = [
     sub: "(Frozen pack)",
     weight: "500 gm.",
     priceWhole: "20",
-    priceDecimal: "29",
+    
     emoji:
       "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
     description:
@@ -109,7 +107,7 @@ export const products: Product[] = [
     sub: "(Local Carrot)",
     weight: "500 gm.",
     priceWhole: "19",
-    priceDecimal: "29",
+    
     emoji:
       "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
     description:
@@ -122,7 +120,7 @@ export const products: Product[] = [
     sub: "(Local Cucumber)",
     weight: "500 gm.",
     priceWhole: "04",
-    priceDecimal: "29",
+    
     emoji:
       "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
     description:
@@ -135,7 +133,7 @@ export const products: Product[] = [
     sub: "(Bacon)",
     weight: "500 gm.",
     priceWhole: "21",
-    priceDecimal: "29",
+    
     emoji:
       "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
     description:
@@ -148,7 +146,7 @@ export const products: Product[] = [
     sub: "(Local Cabbage)",
     weight: "500 gm.",
     priceWhole: "09",
-    priceDecimal: "29",
+    
     emoji:
       "https://yfpbrdnvnrfggyocnqqa.supabase.co/storage/v1/object/public/productSquishy/tcet.webp",
     description:
