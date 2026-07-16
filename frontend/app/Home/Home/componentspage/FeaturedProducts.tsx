@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { propsgetProduct } from "../page";
 
 interface prosFeaturedProducts {
@@ -20,7 +21,10 @@ export default function FeaturedProducts({ respodaw }: prosFeaturedProducts) {
         <div className="grid grid-cols-4 gap-5">
           {respodaw.map((e, i) => {
             return (
-              <div key={i}>
+              <Link
+                key={i}
+                href={`/aboutitem/${e.id}`}
+              >
                 {/* Info */}
                 <div className="group relative bg-white rounded-3xl overflow-hidden shadow-md shadow-pink-100/60 hover:shadow-xl hover:shadow-pink-200/50 hover:-translate-y-2 transition-all duration-300 flex flex-col border border-pink-50">
 
@@ -40,7 +44,7 @@ export default function FeaturedProducts({ respodaw }: prosFeaturedProducts) {
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                       </svg>
                     </div>
-                    
+
                   </div>
 
                   <div className="p-3">
@@ -69,19 +73,19 @@ export default function FeaturedProducts({ respodaw }: prosFeaturedProducts) {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>
 
         {/* View All */}
         <div className="flex justify-center mt-12">
-          <a
-            href="#"
+          <Link
+            href="/Home/allitem"
             className="px-8 py-3 bg-pink-50 text-pink-500 font-bold rounded-full border-2 border-pink-200 hover:bg-pink-400 hover:text-white hover:border-pink-400 hover:-translate-y-0.5 transition-all duration-300 text-sm"
           >
             ดูสินค้าทั้งหมด →
-          </a>
+          </Link>
         </div>
       </div>
     </section>

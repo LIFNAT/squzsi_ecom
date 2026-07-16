@@ -23,6 +23,7 @@ export interface propsstatetextadd {
 export default function AdminSellPage() {
 
   const [imageFile, setImageFile] = useState<File[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const [statetextadd, setstatetextadd] = useState<propsstatetextadd>({
     product_name: '',
@@ -42,7 +43,11 @@ export default function AdminSellPage() {
   ) => {
     e.preventDefault();
 
+    if (loading) return;
+
     try {
+      setLoading(true);
+
       const formData = new FormData();
 
       formData.append("product_name", statetextadd.product_name);
@@ -55,11 +60,9 @@ export default function AdminSellPage() {
         String(statetextadd.current_product)
       );
 
-      if (imageFile) {
-        imageFile.forEach((file) => {
-          formData.append("images", file);
-        });
-      }
+      imageFile.forEach((file) => {
+        formData.append("images", file);
+      });
 
       await axios.post(
         `${post}/addproduct`,
@@ -79,36 +82,13 @@ export default function AdminSellPage() {
         },
       });
 
-
-      console.log("submit imageFile =", imageFile);
+      setImageFile([]);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
-
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault() // ป้องกันไม่ให้หน้าเว็บรีเฟรชตัวเองตามกลไกปกติของ HTML Form
-
-  //   try {
-  //     await axios.post(`${post}/addproduct`, statetextadd)
-
-
-  //     setstatetextadd({
-  //       product_name: '',
-  //       category: '',
-  //       description: '',
-  //       price: 0,
-  //       promotion: 0,
-  //       current_product: 0,
-  //       product_image: {
-  //         thumbnail: "",
-  //         gallery: []
-  //       }
-  //     })
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
 
   return (
     <div className="relative min-h-screen bg-[#FFF8FB] py-10 px-4 sm:px-6">
@@ -185,9 +165,10 @@ export default function AdminSellPage() {
               {/* ปุ่มบันทึก */}
               <button
                 type="submit"
+                disabled={loading}
                 className="w-full sm:w-auto px-8 py-3 rounded-full bg-pink-400 text-white font-bold text-sm hover:bg-pink-500 hover:shadow-lg hover:shadow-pink-300/50 hover:-translate-y-0.5 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none transition-all duration-200"
               >
-                บันทึก
+                {loading ? "กำลังบันทึก..." : "บันทึก"}
               </button>
             </div>
           </div>

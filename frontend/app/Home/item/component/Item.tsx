@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "motion/react";
-import { ChevronRight } from "lucide-react"; // ลบ Plus ออกเพราะเราใช้คำว่า "ซื้อ" แทนแล้ว
+import { ChevronRight, Link } from "lucide-react"; // ลบ Plus ออกเพราะเราใช้คำว่า "ซื้อ" แทนแล้ว
 import { products } from "@/app/data/mockProducts";
 
 interface Product {
@@ -96,7 +96,7 @@ export default function Item() {
             เลือกชมสินค้าที่คุณอาจกำลังมองหาอยู่
           </p>
         </div>
-        <a
+        <Link
           href="#"
           className="text-[15px] font-medium text-[#0066cc] hover:text-[#0055ad] flex items-center gap-1 transition-colors group mb-1"
         >
@@ -105,7 +105,7 @@ export default function Item() {
             size={16} 
             className="group-hover:translate-x-1 transition-transform duration-300" 
           />
-        </a>
+        </Link>
       </div>
 
       {/* Grid Section */}

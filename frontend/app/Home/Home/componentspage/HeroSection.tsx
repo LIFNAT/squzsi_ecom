@@ -1,3 +1,5 @@
+import { Link } from "lucide-react";
+
 export default function HeroSection() {
   return (
     <section className="relative w-full overflow-hidden   min-h-[88vh] flex items-center">
@@ -35,13 +37,13 @@ export default function HeroSection() {
               href="#featured"
               className="px-8 py-3.5 bg-pink-400 text-white font-bold rounded-full shadow-lg shadow-pink-200/60 hover:bg-pink-500 hover:shadow-pink-300/70 hover:-translate-y-0.5 active:scale-95 transition-all duration-300 text-sm"
             >
-              ช้อปเลย
+              <p>ช้อปเลย</p>
             </a>
             <a
               href="#categories"
               className="px-8 py-3.5 bg-white text-pink-500 font-bold rounded-full border-2 border-pink-200 hover:border-pink-400 hover:bg-pink-50 hover:-translate-y-0.5 active:scale-95 transition-all duration-300 text-sm shadow-sm"
             >
-              ดูคอลเลกชัน
+              <p>ดูคอลเลกชัน</p>
             </a>
           </div>
 

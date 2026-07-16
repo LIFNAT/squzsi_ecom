@@ -1,5 +1,5 @@
 import { propsgetProduct } from "../page";
-import { CATEGORIES, nearexproduct, SORT_OPTIONS } from "../types";
+import { CATEGORIES, nearexproduct } from "../types";
 
 interface propsStockTable {
   response: propsgetProduct[];
@@ -68,7 +68,7 @@ export default function StockToolbar({ response, statusFilter, setstatusFilter, 
       </select>
 
       {/* เรียงลำดับ */}
-      <select
+      {/* <select
         id="stock-sort"
         // value={sort}
         // onChange={(e) => onSort(e.target.value)}
@@ -79,7 +79,7 @@ export default function StockToolbar({ response, statusFilter, setstatusFilter, 
             {opt.label}
           </option>
         ))}
-      </select>
+      </select> */}
     </div>
   );
 }

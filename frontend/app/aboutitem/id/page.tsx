@@ -2,6 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from 'motion/react'
 
 import {
   BadgeCheck,
@@ -37,7 +38,6 @@ type FeatureItem = {
 
 import Image from "next/image";
 import Link from "next/link";
-import { getProductById, products } from "@/app/data/mockProducts";
 
 const featureItems: FeatureItem[] = [
   {
@@ -70,11 +70,13 @@ export default function AboutItem() {
   const id = params?.id as string;
 
   const [product, setProduct] = useState<Product | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [selectedFeature, setSelectedFeature] = useState<FeatureItem | null>(
     null,
   );
+
 
   useEffect(() => {
     if (!id) return;
@@ -99,6 +101,24 @@ export default function AboutItem() {
     loadProduct();
   }, [id]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/product/getproductLimitThree");
+        const json = await res.json();
+
+        // ถ้า API ส่งกลับมาเป็น { success: true, data: [...] }
+        if (json.success) {
+          setProducts(json.data); // เอา data ไปใส่ใน state
+        }
+      } catch (err) {
+        console.error("Error loading products:", err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   if (!product) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-4">
@@ -118,10 +138,6 @@ export default function AboutItem() {
     );
   }
 
-  const relatedProducts = products
-    .filter((item) => item.id !== product.id)
-    .slice(0, 3);
-
   return (
     <div className="min-h-screen bg-[linear-gradient(135deg,#fff7ed_0%,#fffaf5_100%)] px-4 py-6 md:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
@@ -137,11 +153,13 @@ export default function AboutItem() {
           <div className="rounded-[28px] border border-pink-100 bg-white p-4 shadow-[0_20px_60px_rgba(249,115,22,0.12)]">
             <div className="relative aspect-square overflow-hidden rounded-3xl bg-pink-50">
               <Image
-                src={product.producy_image[0]}
+                src={
+                  product.producy_image?.[0]
+                    ? product.producy_image[0]
+                    : "/no-image.png"
+                }
                 alt={product.product_name}
                 fill
-                className="object-cover"
-                priority
               />
               <button className="absolute right-4 top-4 rounded-full border border-white/80 bg-white/90 p-2 text-pink-500 shadow-sm backdrop-blur">
                 <Heart size={18} />
@@ -235,7 +253,7 @@ export default function AboutItem() {
                       key={item.title}
                       type="button"
                       onClick={() => setSelectedFeature(item)}
-                      className="rounded-2xl border border-gray-100 bg-gray-50 p-3 text-left transition hover:-translate-y-0.5 hover:border-pink-200 hover:bg-white"
+                      className="rounded-2xl border border-gray-100 cursor-pointer bg-gray-50 p-3 text-left transition hover:-translate-y-0.5 hover:border-pink-200 hover:bg-white"
                     >
                       <Icon size={16} className={`mb-2 ${item.iconClass}`} />
                       <div className="font-medium text-gray-700">
@@ -257,15 +275,16 @@ export default function AboutItem() {
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex items-start gap-2">
                   <BadgeCheck size={16} className="mt-0.5 text-emerald-500" />
-                  {product.description}
-                </li>
-                <li className="flex items-start gap-2">
-                  <BadgeCheck size={16} className="mt-0.5 text-emerald-500" />
                   บรรจุอย่างดีและปลอดภัยพร้อมจัดส่งทันที
                 </li>
                 <li className="flex items-start gap-2">
                   <BadgeCheck size={16} className="mt-0.5 text-emerald-500" />
                   เหมาะสำหรับของขวัญและใช้ในชีวิตประจำวัน
+                </li>
+                {/* เพิ่มอันนี้เข้าไปครับ */}
+                <li className="flex items-start gap-2">
+                  <BadgeCheck size={16} className="mt-0.5 text-emerald-500" />
+                  การันตีคุณภาพสินค้าทุกชิ้น
                 </li>
               </ul>
             </div>
@@ -282,9 +301,7 @@ export default function AboutItem() {
                 ข้อมูลเพิ่มเติมเพื่อช่วยตัดสินใจซื้อของคุณ
               </p>
             </div>
-            <div className="rounded-full bg-pink-50 px-3 py-1 text-sm font-semibold text-pink-500">
-              {product.category}
-            </div>
+
           </div>
 
           <div className="mt-6 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
@@ -323,63 +340,88 @@ export default function AboutItem() {
             </h2>
             <span className="text-sm text-gray-500">แนะนำจากร้าน</span>
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {relatedProducts.map((item) => (
-              <Link
-                key={item.id}
-                href={`/aboutitem/${item.id}`}
-                className="rounded-3xl border border-gray-100 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-              >
-                <div className="relative mb-3 aspect-square overflow-hidden rounded-2xl bg-gray-50">
-                  <Image
-                    src={item.emoji}
-                    alt={item.name}
-                    fill
-                    className="object-cover"
-                  />
+          <div className="grid gap-4 md:grid-cols-4">
+            {products.map((e, i) => {
+              return (
+
+                <div
+                  key={i}
+                  className="rounded-[24px] border border-gray-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                >
+                  <div className="relative mb-3 aspect-square overflow-hidden rounded-t-2xl ">
+                    <Image
+                      src={
+                        Array.isArray(e.producy_image)
+                          ? e.producy_image[0]
+                          : typeof e.producy_image === "string"
+                            ? e.producy_image
+                            : "/mqytoljtgeYfW558jDS-o.jpg"
+                      }
+                      alt={e.product_name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className='p-3'>
+                    <h3 className="font-semibold text-gray-900">{e.product_name || '-'}</h3>
+                    <p className="mt-1 text-sm text-gray-500">{e.category || '-'}</p>
+                    <div className="flex items-center justify-between mt-auto">
+                      <span className="text-xl font-extrabold text-pink-500">
+                        ${e.price || '-'}
+                      </span>
+
+                      <Link
+                        href={`/aboutitem/${e.id}`}
+                        className="px-4 py-2 rounded-full text-xs font-bold bg-pink-500 text-white"
+                      >
+                        ดูสินค้า
+                      </Link>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="font-semibold text-gray-900">{item.name}</h3>
-                <p className="mt-1 text-sm text-gray-500">{item.sub}</p>
-                <div className="mt-3 text-lg font-black text-pink-500">
-                  ฿{item.priceWhole}
-                </div>
-              </Link>
-            ))}
+
+              )
+            })}
           </div>
         </div>
       </div>
 
-      {selectedFeature && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
-          onClick={() => setSelectedFeature(null)}
-        >
-          <div
-            className="w-full max-w-sm rounded-3xl border border-gray-200 bg-white p-5 shadow-2xl"
-            onClick={(event) => event.stopPropagation()}
+      <AnimatePresence>
+        {selectedFeature && (
+          <motion.div
+            animate={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+            onClick={() => setSelectedFeature(null)}
           >
-            <div className="flex items-center gap-2 text-pink-500">
-              {(() => {
-                const Icon = selectedFeature.icon;
-                return <Icon size={18} className={selectedFeature.iconClass} />;
-              })()}
-              <h3 className="text-lg font-semibold text-gray-900">
-                {selectedFeature.title}
-              </h3>
-            </div>
-            <p className="mt-3 text-sm leading-6 text-gray-600">
-              {selectedFeature.description}
-            </p>
-            <button
-              type="button"
-              onClick={() => setSelectedFeature(null)}
-              className="mt-4 rounded-full bg-pink-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-pink-600"
+            <div
+              className="w-full max-w-sm rounded-3xl border border-gray-200 bg-white p-5 shadow-2xl"
+              onClick={(event) => event.stopPropagation()}
             >
-              ปิด
-            </button>
-          </div>
-        </div>
-      )}
+              <div className="flex items-center gap-2 text-pink-500">
+                {(() => {
+                  const Icon = selectedFeature.icon;
+                  return <Icon size={18} className={selectedFeature.iconClass} />;
+                })()}
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {selectedFeature.title}
+                </h3>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-gray-600">
+                {selectedFeature.description}
+              </p>
+              <button
+                type="button"
+                onClick={() => setSelectedFeature(null)}
+                className="mt-4 rounded-full bg-pink-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-pink-600"
+              >
+                ปิด
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

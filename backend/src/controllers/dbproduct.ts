@@ -14,20 +14,49 @@ export const producthome = async (c: Context) => {
         const result = await pool.query(sql)
 
         return c.json({
-            suess: true,
+            success: true,
             data: result.rows,
         })
 
     } catch (err) {
         return c.json(
             {
-                status: false,
+                success: false,
                 message: "Server Error",
             },
             500
         );
     }
 }
+
+export const getproductLimitThree = async (c: Context) => {
+    try {
+        const sql = `
+      SELECT *
+      FROM product
+      ORDER BY RANDOM()
+      LIMIT 4;
+    `;
+
+        const result = await pool.query(sql);
+
+        return c.json(
+            {
+                success: true,
+                data: result.rows,
+            },
+            200
+        );
+    } catch (error) {
+        return c.json(
+            {
+                success: false,
+                message: "server error",
+            },
+            500
+        );
+    }
+};
 
 export const getProductById = async (c: Context) => {
     try {
