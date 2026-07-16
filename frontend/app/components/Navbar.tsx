@@ -1,9 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+type UserProfile = {
+  id?: number;
+  full_name?: string;
+  email?: string;
+  created_at?: string;
+};
+
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const loadUser = () => {
+      if (typeof window === "undefined") return;
+      const stored = window.localStorage.getItem("user");
+
+      if (!stored) {
+        setUser(null);
+        return;
+      }
+
+      try {
+        setUser(JSON.parse(stored));
+      } catch {
+        setUser(null);
+      }
+    };
+
+    loadUser();
+    window.addEventListener("storage", loadUser);
+
+    return () => {
+      window.removeEventListener("storage", loadUser);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("user");
+    }
+    setUser(null);
+    router.push("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/80 border-b border-pink-100 shadow-sm">
@@ -60,13 +104,30 @@ export default function Navbar() {
           </svg>
           <span className="absolute top-1 right-1 h-2 w-2 bg-pink-400 rounded-full"></span>
         </Link>
-          {/* Login */}
-          <a
-            href="#"
-            className="ml-1 px-4 py-2 bg-pink-400 text-white text-sm font-semibold rounded-full hover:bg-pink-500 active:scale-95 transition-all duration-200 shadow-sm shadow-pink-200"
-          >
-            Login
-          </a>
+          {/* Login / User */}
+          {user ? (
+            <>
+              <Link
+                href="/user/profile"
+                className="ml-1 px-4 py-2 rounded-full bg-pink-50 text-pink-600 text-sm font-semibold shadow-sm hover:bg-pink-100 transition-all duration-200"
+              >
+                สวัสดี, {user.full_name || user.email || "ผู้ใช้"}
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 border border-pink-200 text-sm font-semibold rounded-full text-pink-600 hover:bg-pink-50 transition-all duration-200"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              href="/auth/login"
+              className="ml-1 px-4 py-2 bg-pink-400 text-white text-sm font-semibold rounded-full hover:bg-pink-500 active:scale-95 transition-all duration-200 shadow-sm shadow-pink-200"
+            >
+              Login
+            </Link>
+          )}
         </div>
 
         {/* Mobile hamburger */}
@@ -94,9 +155,23 @@ export default function Navbar() {
             </a>
           ))}
           <div className="flex items-center gap-4 pt-2 border-t border-pink-50">
-            <a href="#" className="px-5 py-2 bg-pink-400 text-white text-sm font-semibold rounded-full hover:bg-pink-500 transition-all duration-200">
-              Login
-            </a>
+            {user ? (
+              <>
+                <Link href="/user/profile" className="text-sm font-semibold text-pink-600">
+                  สวัสดี, {user.full_name || user.email || "ผู้ใช้"}
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="px-5 py-2 border border-pink-200 text-sm font-semibold rounded-full text-pink-600 hover:bg-pink-50 transition-all duration-200"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link href="/auth/login" className="px-5 py-2 bg-pink-400 text-white text-sm font-semibold rounded-full hover:bg-pink-500 transition-all duration-200">
+                Login
+              </Link>
+            )}
           </div>
         </div>
       )}

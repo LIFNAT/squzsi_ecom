@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ProfileSidebar, { TabKey }  from "./components/ProfileSidebar";
 import OrdersSection, { Order }    from "./components/OrdersSection";
 import AddressSection, { Address } from "./components/AddressSection";
@@ -9,6 +9,12 @@ import PointsSection, { PointTransaction } from "./components/PointsSection";
 import SecuritySection, { LoginHistory }  from "./components/SecuritySection";
 
 // ─── Mock Data ────────────────────────────────────────────────
+
+type LoggedUser = {
+  full_name?: string;
+  email?: string;
+  created_at?: string;
+};
 
 const mockUser = {
   name: "น้องมีมี่",
@@ -117,12 +123,40 @@ const mockLoginHistory: LoginHistory[] = [
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<TabKey>("orders");
+  const [loggedUser, setLoggedUser] = useState<LoggedUser | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const stored = window.localStorage.getItem("user");
+    if (!stored) {
+      setLoggedUser(null);
+      return;
+    }
+
+    try {
+      setLoggedUser(JSON.parse(stored));
+    } catch {
+      setLoggedUser(null);
+    }
+  }, []);
+
+  const profileUser = useMemo(() => ({
+    ...mockUser,
+    name: loggedUser?.full_name || mockUser.name,
+    email: loggedUser?.email || mockUser.email,
+    joinDate: loggedUser?.created_at ? new Date(loggedUser.created_at).toLocaleDateString("th-TH", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }) : mockUser.joinDate,
+  }), [loggedUser]);
 
   const SECTIONS: Record<TabKey, React.ReactNode> = {
     orders:   <OrdersSection   orders={mockOrders} />,
     address:  <AddressSection  addresses={mockAddresses} />,
     wishlist: <WishlistSection items={mockWishlist} />,
-    points:   <PointsSection   points={mockUser.points} transactions={mockTransactions} />,
+    points:   <PointsSection   points={profileUser.points} transactions={mockTransactions} />,
     security: <SecuritySection loginHistory={mockLoginHistory} />,
   };
 
@@ -132,7 +166,7 @@ export default function ProfilePage() {
 
         {/* Sidebar */}
         <ProfileSidebar
-          user={mockUser}
+          user={profileUser}
           activeTab={activeTab}
           onTabChange={setActiveTab}
         />

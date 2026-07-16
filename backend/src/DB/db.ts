@@ -11,6 +11,15 @@ export const pool = new Pool({
 export const connectDB = async () => {
     try {
         const client = await pool.connect()
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                full_name VARCHAR(255) NOT NULL,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                password_hash TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `)
         console.log('DB connect')
         client.release()
     } catch (error) {
