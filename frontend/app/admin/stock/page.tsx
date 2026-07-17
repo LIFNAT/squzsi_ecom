@@ -1,5 +1,6 @@
 import { post } from "@/app/post";
 import StockPage from "./components/control";
+import Sizebar from "./components/sizebar";
 
 export interface propsgetProduct {
     id: number
@@ -10,8 +11,8 @@ export interface propsgetProduct {
     promotion: number
     current_product: number
     producy_image: string[]
-    created_at : number
-    status : string
+    created_at: number
+    status: string
 }
 
 async function getProduct() {
@@ -32,8 +33,14 @@ async function getProduct() {
 export default async function Pagestock() {
     const response: propsgetProduct[] = await getProduct();
     return (
-        <div>
-            <StockPage response={response} />
+        <div className="flex w-full  ">
+          <div className="">
+                <Sizebar />
+            </div>
+
+            <div className="flex-1  ">
+                <StockPage response={response} />
+            </div>
         </div>
     )
 }

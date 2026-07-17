@@ -95,3 +95,61 @@ export const loginUser = async (c: Context) => {
     return c.json({ success: false, message: 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ' }, 500)
   }
 }
+
+export const accountuserprofile = async (c: Context) => {
+  try {
+    const sql = `
+    SELECT * FROM users
+    `
+    const reslut = await pool.query(sql)
+
+    return c.json({
+      success: true,
+      data: reslut.rows
+    }, 200)
+  } catch (err) {
+    return c.json({
+      suceess: false,
+      message: 'server error'
+    }, 500)
+  }
+}
+
+export const updateUserProfile = async (c: Context) => {
+  try {
+    const id = c.req.param('id')
+    const body = await c.req.json()
+    const { full_name, email, status, address } = body
+
+    const result = await pool.query(
+      `
+    UPDATE users
+    SET full_name = COALESCE($1 ,full_name),
+    email = COALESCE($2 ,email),
+    stauts = COALESCE($3 ,stauts),
+    address = COALESCE($4,address)
+    WHERE id = $5
+    RETURNING id ,full_name , email , stauts , address
+    `,
+      [full_name, email, status, address, id]
+    )
+
+    if (result.rowCount === 0) {
+      return c.json({
+        success: false,
+        message: 'ไม่พบผู้ใช้งาน'
+      }, 404)
+    }
+
+    return c.json({
+      success: true,
+      message: 'อัปเดทข้อมูลสําเร็จ',
+      data: result.rows[0]
+    }, 200)
+  } catch (err) {
+    return c.json({
+      success: false,
+      message: 'UPDATE_USER_ERROR', err
+    }, 500)
+  }
+}

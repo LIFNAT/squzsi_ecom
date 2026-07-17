@@ -42,26 +42,16 @@ export default function StockPage({ response }: propsStockPage) {
   });
 
   return (
-    <div className="relative min-h-screen bg-[#FFF8FB] py-10 px-4 sm:px-6">
+    <div className="relative min-h-screen bg-[#FFF8FB] py-10 w-full px-4 sm:px-6">
       {/* วงกลมตกแต่งข้างหลัง */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-pink-200/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-72 h-72 bg-rose-200/15 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto">
+      <div className="relative  px-5">
         {/* ===================== Header ===================== */}
         <div className="mb-8">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-xs text-gray-400 mb-4">
-            <Link href="/" className="hover:text-pink-400 transition-colors duration-200">
-              หน้าหลัก
-            </Link>
-            <span>/</span>
-            <Link href="/admin" className="hover:text-pink-400 transition-colors duration-200">
-              แอดมิน
-            </Link>
-            <span>/</span>
-            <span className="text-pink-400 font-semibold">จัดการสต็อก</span>
-          </div>
+          
 
           {/* หัวข้อ + ปุ่มเพิ่มสินค้า */}
           <div className="flex items-center justify-between gap-4 flex-wrap">
