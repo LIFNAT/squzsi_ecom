@@ -3,6 +3,7 @@ import axios from "axios"
 import { propsaccount } from "@/app/admin/account/page"
 import { useState } from "react"
 import { post } from "@/app/post"
+import { motion } from 'motion/react'
 
 interface EditaccountProps {
     user: propsaccount
@@ -43,8 +44,18 @@ export default function Editaccount({
     }
 
     return (
-        <div className='fixed inset-0 bg-black/60 z-50 backdrop-blur-sm flex items-center justify-center'>
-            <div className="w-150 h-150 bg-white rounded-2xl p-5">
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className='fixed inset-0 bg-black/60 z-50 backdrop-blur-sm flex items-center justify-center'>
+
+            <div
+                onClick={onClose}
+                className="fixed inset-0"
+            />
+
+            <div className="w-150 h-150 bg-white rounded-2xl p-5 z-50">
                 <div>
                     <h2 className="text-2xl font-bold text-gray-800">แก้ไขข้อมูลส่วนตัว</h2>
                     <p className="text-gray-500 text-sm">ปรับปรุงรายละเอียดบัญชีของคุณ</p>
@@ -105,7 +116,9 @@ export default function Editaccount({
                     </div>
 
                     <div className="flex gap-3 mt-2">
-                        <button type="button" className="flex-1 py-3 cursor-pointer rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition">
+                        <button
+                            onClick={onClose}
+                            type="button" className="flex-1 py-3 cursor-pointer rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition">
                             ยกเลิก
                         </button>
                         <button type="submit" className="flex-1 py-3 cursor-pointer rounded-lg bg-pink-600 hover:bg-pink-700 text-white font-medium transition shadow-md shadow-blue-200">
@@ -114,6 +127,6 @@ export default function Editaccount({
                     </div>
                 </form>
             </div>
-        </div>
+        </motion.div>
     )
 }

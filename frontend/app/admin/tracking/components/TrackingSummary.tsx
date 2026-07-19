@@ -13,6 +13,7 @@ export default function TrackingSummary({ respodaw }: propsTrackingSummary) {
   const pending = respodaw.filter(e => (e.state === 'รอดำเนินการ')).length
   const totalDuringTransport = respodaw.filter(e => (e.state === 'ระหว่างขนส่ง')).length
   const deliverySuccessful = respodaw.filter(e => (e.state === 'จัดส่งสำเร็จ')).length
+  const totalcancelOders = respodaw.filter(e => (e.state === 'ยกเลิก')).length
 
   const cards = [
     {
@@ -43,10 +44,17 @@ export default function TrackingSummary({ respodaw }: propsTrackingSummary) {
       color: "bg-green-50 border-green-100",
       textColor: "text-green-600",
     },
+    {
+      label: "ยกเลิก",
+      value: totalcancelOders,
+      icon: "❌",
+      color: "bg-green-50 border-green-100",
+      textColor: "text-green-600",
+    },
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
       {cards.map((card) => (
         <div
           key={card.label}

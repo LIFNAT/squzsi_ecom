@@ -5,8 +5,9 @@ import SummaryCards from "./SummaryCards";
 import StockToolbar from "./StockToolbar";
 import StockTable from "./StockTable";
 import QuickEditModal from "./QuickEditModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { propsgetProduct } from "../page";
+import { useRouter } from "next/navigation";
 
 interface propsStockPage {
   response: propsgetProduct[]
@@ -14,13 +15,44 @@ interface propsStockPage {
 
 export default function StockPage({ response }: propsStockPage) {
 
-  const [popup, setpopup] = useState({
-    QuickEdit: false
-  })
+  const router = useRouter()
 
+  const [popup, setpopup] = useState({ QuickEdit: false })
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [statusFilter, setstatusFilter] = useState('')
+  const [loading, setLoading] = useState(true);
+
+  // ตรวจสอบสิท เเอดมิน
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+
+    if (!userData) {
+      router.replace('/');
+      return;
+    }
+
+    try {
+      const user = JSON.parse(userData);
+
+      // ไม่ใช่แอดมิน => กลับหน้าแรก
+      if (user.status !== 'แอดมิน') {
+        router.replace('/');
+        return;
+      }
+
+      // เป็นแอดมิน => อนุญาตให้ดูหน้า
+      setLoading(false);
+
+    } catch {
+      router.replace('/');
+    }
+  }, [router]);
+
+  // โหลดรอตรวจสอบสิท
+  if (loading) {
+    return <div className="min-h-screen bg-white"></div>;
+  }
 
   //กรองข้อมูลใน table
   const filteredResponse = (response ?? []).filter((item) => {
@@ -51,7 +83,7 @@ export default function StockPage({ response }: propsStockPage) {
         {/* ===================== Header ===================== */}
         <div className="mb-8">
           {/* Breadcrumb */}
-          
+
 
           {/* หัวข้อ + ปุ่มเพิ่มสินค้า */}
           <div className="flex items-center justify-between gap-4 flex-wrap">

@@ -293,7 +293,7 @@ export default function TrackingDetails({ order, onBack }: TrackingDetailsProps)
         onClick={() => changeState(selectedStatus)}
         className="w-full py-3 rounded-full bg-pink-400 text-white font-bold text-sm hover:bg-pink-500 hover:shadow-lg hover:shadow-pink-300/50 active:scale-98 transition-all duration-200 mt-2"
       >
-        บันทึกสถานะการจัดส่งใหม่
+        บันทึกสถานะใหม่
       </button>
     </div>
   );

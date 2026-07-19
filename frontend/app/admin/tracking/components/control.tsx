@@ -7,6 +7,7 @@ import { propsTracking } from "../page";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { post } from "@/app/post";
+import { useAdminGuard } from "@/app/hooks/useAdminGuard";
 
 interface propsControltracking {
     respodaw: propsTracking[]
@@ -17,6 +18,7 @@ export default function Controltracking({ respodaw }: propsControltracking) {
     const [respodaws, setRespodaw] = useState<propsTracking[]>(respodaw);
     const [selectedOrder, setSelectedOrder] = useState<propsTracking | null>(null);
 
+    const loading = useAdminGuard()
 
     // โหลดข้อมูลใหม่อัตโนมัติ
     useEffect(() => {
@@ -43,6 +45,10 @@ export default function Controltracking({ respodaw }: propsControltracking) {
         return () => clearInterval(interval);
     }, []);
 
+    if (loading) {
+        return <div className='min-h-screen bg-white'></div>
+    }
+
 
     return (
         <div className="relative min-h-screen bg-[#FFF8FB] py-10 px-10 w-full">
@@ -59,7 +65,7 @@ export default function Controltracking({ respodaw }: propsControltracking) {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
 
                     <div className="md:col-span-1 flex flex-col gap-4 bg-white rounded-3xl border border-pink-50 p-5 shadow-sm">
-                        
+
                         <TrackingList
                             respodaw={respodaws}
                             onSelect={setSelectedOrder}

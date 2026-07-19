@@ -4,6 +4,7 @@ import { propsaccount } from "@/app/admin/account/page"
 import Image from "next/image"
 import Editaccount from "../popup/editaccount"
 import { useState } from "react"
+import { AnimatePresence } from "motion/react"
 
 interface psopsAccountuser {
     respodaw: propsaccount[]
@@ -98,23 +99,25 @@ export default function Accountuser({ respodaw }: psopsAccountuser) {
                     })}
                 </tbody>
             </table>
-            {
-                popupEditaccount && selectedUser && (
-                    <Editaccount
-                        user={selectedUser}
-                        onClose={() => setpopupEditaccount(false)}
-                        onUpdate={(updatedUser) => {
-                            setUsers(prev =>
-                                prev.map(user =>
-                                    user.id === updatedUser.id
-                                        ? updatedUser
-                                        : user
+            <AnimatePresence>
+                {
+                    popupEditaccount && selectedUser && (
+                        <Editaccount
+                            user={selectedUser}
+                            onClose={() => setpopupEditaccount(false)}
+                            onUpdate={(updatedUser) => {
+                                setUsers(prev =>
+                                    prev.map(user =>
+                                        user.id === updatedUser.id
+                                            ? updatedUser
+                                            : user
+                                    )
                                 )
-                            )
-                        }}
-                    />
-                )
-            }
+                            }}
+                        />
+                    )
+                }
+            </AnimatePresence>
         </div>
     )
 }
