@@ -101,7 +101,9 @@ export default function Navbar() {
                 ? "/auth/login"
                 : user.status === "แอดมิน"
                   ? "/admin/stock"
-                  : "/"
+                  : user.status === "ลูกค้า"
+                    ? "/user/profile"
+                    : "/"
             } className="ml-1 px-4 py-2 bg-pink-400 text-white text-sm font-semibold rounded-full hover:bg-pink-500 active:scale-95 transition-all duration-200 shadow-sm shadow-pink-200"
           >
             {user ? user.full_name : "Login"}

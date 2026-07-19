@@ -69,7 +69,7 @@ export default function Cart() {
     0
   );
 
-  const shippingFee = subtotal > 0 ? 30 : 0;
+  const shippingFee = subtotal > 0 ? 0 : 0;
 
   const total = subtotal - totalDiscount + shippingFee;
 
@@ -185,13 +185,13 @@ export default function Cart() {
               <span>ราคาสินค้ารวม</span>
               <span>฿{subtotal.toLocaleString()}</span>
             </div>
-            <div className="flex justify-between text-emerald-600">
+            <div className="flex justify-between text-red-600">
               <span>ส่วนลดรวม</span>
               <span>-฿{totalDiscount.toLocaleString()}</span>
             </div>
             <div className="flex justify-between text-gray-600">
               <span>ค่าจัดส่ง</span>
-              <span>฿{shippingFee.toLocaleString()}</span>
+              <span className="text-green-500">ฟรีค่าจัดส่ง</span>
             </div>
             <div className="my-2 border-t border-dashed border-gray-200" />
             <div className="flex justify-between text-base font-bold text-[#1D1D1D]">

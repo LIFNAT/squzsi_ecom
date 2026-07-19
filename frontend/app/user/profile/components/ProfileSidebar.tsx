@@ -21,7 +21,7 @@ export default function ProfileSidebar() {
 
   const TAB_COMPONENTS = {
     orders: <OrdersSection />,
-    // address: <AddressSection />,
+    address: <AddressSection />,
     // wishlist: <WishlistSection />,
     // points: <PointsSection />,
     // security: <SecuritySection />,
@@ -105,7 +105,7 @@ export default function ProfileSidebar() {
         </div>
       </div>
 
-      <main className="flex-1 col-span-2 border bg-white rounded-2xl border-gray-200 p-3">
+      <main className="flex-1 col-span-2 ">
         {TAB_COMPONENTS[activeTab as keyof typeof TAB_COMPONENTS]}
       </main>
 

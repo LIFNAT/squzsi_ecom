@@ -25,8 +25,17 @@ export const checkout = async (c: Context) => {
                 throw new Error("ไม่พบสินค้า");
             }
             const product = result.rows[0];
+
+            if (product.current_product < item.quantity) {
+                throw new Error(
+                    `${product.product_name} สินค้าไม่เพียงพอ`
+                );
+            }
+
+            const discount = Number(item.promotion || 0);
+
             const totalPrice =
-                Number(product.price) *
+                (Number(product.price) - discount) *
                 Number(item.quantity);
 
             const random = Math.floor(100000 + Math.random() * 900000);
@@ -59,19 +68,32 @@ export const checkout = async (c: Context) => {
                 ]
             );
 
+            await client.query(
+                `
+                UPDATE product
+                SET current_product = current_product - $1
+                WHERE id = $2
+                `,
+                [
+                    item.quantity,
+                    product.id
+                ]
+            );
+
         }
         await client.query("COMMIT");
         return c.json({
             success: true,
             message: "สร้างคำสั่งซื้อสำเร็จ"
         });
-    } catch (error) {
+    } catch (error: any) {
         await client.query("ROLLBACK");
         console.error(error);
+
         return c.json({
             success: false,
-            message: "Server Error"
-        }, 500);
+            message: error.message || "Server Error"
+        }, error.message.includes("สินค้าไม่เพียงพอ") ? 400 : 500);
     } finally {
         client.release();
     }
@@ -99,8 +121,9 @@ export const getorders = async (c: Context) => {
 
         product.id AS product_id,
         product.product_name AS product_name,
-        product.category
-
+        product.category,
+        product.promotion
+        
         FROM orders
 
         INNER JOIN users
@@ -152,7 +175,9 @@ export const getordersbyuser = async (c: Context) => {
 
         product.id AS product_id,
         product.product_name,
-        product.category
+        product.category,
+        product.producy_image,
+        product.promotion
 
       FROM orders
 

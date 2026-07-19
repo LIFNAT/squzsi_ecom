@@ -1,6 +1,7 @@
 "use client";
 import { post } from '@/app/post';
 import React, { useEffect, useState } from 'react';
+import Swal from "sweetalert2";
 
 type PaymentMethodId = 'qr' | 'card' | 'cod';
 
@@ -15,11 +16,18 @@ export default function Payment() {
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethodId>('qr');
   const [checkoutData, setCheckoutData] = useState<any>(null);
 
+  const user = JSON.parse(
+    localStorage.getItem("user") || "{}"
+  );
+
+
   //เเปลงชิ้น * เงิน
   const sumpriceitme =
     checkoutData?.items?.reduce(
       (sum: number, item: any) =>
-        sum + Number(item.price) * item.quantity,
+        sum +
+        (Number(item.price) - Number(item.promotion || 0)) *
+        Number(item.quantity),
       0
     ) || 0;
 
@@ -27,81 +35,136 @@ export default function Payment() {
 
     const checkoutProduct = localStorage.getItem("checkout-product");
     const cartItems = localStorage.getItem("cart-items");
-
     const type = localStorage.getItem("checkout-type");
-
 
     // ซื้อเลย
     if (type === "product" && checkoutProduct) {
 
       const product = JSON.parse(checkoutProduct);
-
       setCheckoutData({
         type: "product",
         items: [product]
       });
-
       return;
     }
 
-
     // จากตะกร้า
     if (type === "cart" && cartItems) {
-
       const cart = JSON.parse(cartItems);
-
       setCheckoutData({
         type: "cart",
         items: cart
       });
+      return;
+    }
 
+  }, []);
+
+  const handleCheckout = async () => {
+    if (!checkoutData || !checkoutData.items) {
+      Swal.fire({
+        icon: "warning",
+        title: "ไม่มีข้อมูลสินค้า",
+        text: "กรุณาลองใหม่อีกครั้ง",
+        confirmButtonColor: "#ec4899",
+      });
+      return;
+    }
+
+    // ตรวจสอบ stock ก่อน
+    const isOutOfStock = checkoutData.items.some(
+      (item: any) => item.quantity > item.stock
+    );
+
+    if (isOutOfStock) {
+      Swal.fire({
+        icon: "error",
+        title: "สินค้าไม่เพียงพอ",
+        text: "ขออภัยครับ สินค้าบางรายการหมดหรือมีจำนวนไม่เพียงพอ",
+        confirmButtonColor: "#ec4899",
+      });
       return;
     }
 
 
-  }, []);
+    // alert ยังไม่มีที่อยู่จัดส่ง
+    if (!user.address || user.address.trim() === "") {
+      const result = await Swal.fire({
+        icon: "warning",
+        title: "ยังไม่มีที่อยู่จัดส่ง",
+        text: "กรุณากรอกที่อยู่ก่อนทำรายการสั่งซื้อ",
+        confirmButtonColor: "#ec4899",
+        confirmButtonText: "ไปกรอกที่อยู่",
+      });
 
-const handleCheckout = async () => {
+      if (result.isConfirmed) {
+        window.location.href = "/user/profile";
+      }
 
-  if (!checkoutData) {
-    console.log("ไม่มีข้อมูลสินค้า");
-    return;
-  }
+      return;
+    }
 
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-  console.log("USER:", user);
-
-  try {
-    const res = await fetch(
-      `${post}/payment/checkout`,
-      {
+    try {
+      const res = await fetch(`${post}/payment/checkout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify({
           user_id: user.id,
-
-          items: checkoutData.items.map((item:any)=>({
-            product_id:item.id,
-            quantity:item.quantity
+          items: checkoutData.items.map((item: any) => ({
+            product_id: item.id,
+            quantity: item.quantity,
+            promotion: Number(item.promotion) || 0,
+            price: Number(item.price),
+            total_price:
+              (Number(item.price) - Number(item.promotion || 0)) *
+              Number(item.quantity),
           })),
+          payment_method: selectedMethod,
+        }),
+      });
 
-          payment_method:selectedMethod
-        })
+      const data = await res.json();
+
+      // error จาก backend
+      if (!data.success) {
+        const result = await Swal.fire({
+          icon: "error",
+          title: "ไม่สามารถสั่งซื้อได้",
+          text: data.message || "เกิดข้อผิดพลาดในการทำรายการ",
+          confirmButtonColor: "#ec4899",
+        });
+
+        if (result.isConfirmed) {
+          window.location.href = "/";
+        }
+
+        return;
       }
-    );
 
-    const data = await res.json();
+      const result = await Swal.fire({
+        icon: "success",
+        title: "สั่งซื้อสำเร็จ 🎉",
+        text: "สร้างคำสั่งซื้อเรียบร้อยแล้ว",
+        confirmButtonColor: "#ec4899",
+      });
 
-    console.log("response:", data);
+      if (result.isConfirmed) {
+        window.location.href = "/user/profile";
+      }
 
-  } catch(err){
-    console.error(err);
-  }
-};
+    } catch (err) {
+      console.error(err);
+
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด",
+        text: "ไม่สามารถเชื่อมต่อกับระบบได้",
+        confirmButtonColor: "#ec4899",
+      });
+    }
+  };
 
   const methods: PaymentMethod[] = [
     { id: 'qr', label: 'พร้อมเพย์ / QR Code', desc: 'สแกนจ่ายผ่านแอปธนาคาร' },
@@ -167,14 +230,33 @@ const handleCheckout = async () => {
             </span>
           </div>
 
+          <div className="flex justify-between items-center text-sm mb-1.5">
+
+            <span className="text-[#767676]">
+              ส่วนลด
+            </span>
+
+            <span className="text-[#1D1D1D]">
+              {checkoutData?.items?.map((item: any) => (
+                <div key={item.id}>
+                  {(
+                    Number(item.promotion || 0) *
+                    Number(item.quantity)
+                  ).toLocaleString()} บาท
+                </div>
+              ))}
+            </span>
+          </div>
+
 
           <div className="flex justify-between items-center text-sm mb-1.5">
+
             <span className="text-[#767676]">
               ราคาสินค้ารวม
             </span>
 
             <span className="text-[#1D1D1D]">
-              {sumpriceitme.toLocaleString()}
+              {sumpriceitme.toLocaleString()} บาท
             </span>
           </div>
 

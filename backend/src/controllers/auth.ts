@@ -62,10 +62,10 @@ export const loginUser = async (c: Context) => {
 
     const result = await pool.query(
       `
-    SELECT id, full_name, email, password_hash, created_at, stauts
-    FROM users
-    WHERE email = $1
-    LIMIT 1
+   SELECT id, full_name, email, password_hash, created_at, stauts, address
+   FROM users
+   WHERE email = $1
+   LIMIT 1
   `,
       [normalizedEmail]
     )
@@ -90,6 +90,7 @@ export const loginUser = async (c: Context) => {
         email: user.email,
         created_at: user.created_at,
         status: user.stauts,
+        address: user.address,
       },
     })
   } catch (error) {

@@ -18,6 +18,7 @@ export interface propsTracking {
   receipt: string
   address: string
   id : string
+  promotion : number
 }
 
 async function getdataoders(): Promise<propsTracking[]> {

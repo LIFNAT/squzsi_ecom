@@ -42,6 +42,7 @@ export default function StockTable({ response }: StockTableProps) {
             <th className="pb-3 pl-3">ชื่อสินค้า</th>
             <th className="pb-3 pr-4">หมวดหมู่</th>
             <th className="pb-3 pr-4 text-right">ราคา</th>
+            <th className="pb-3 pr-4 text-center">ส่วนลด</th>
             <th className="pb-3 pr-4 text-center">สต็อก</th>
             <th className="pb-3 pr-4">สถานะ</th>
             <th className="pb-3 pr-4 text-center">วันที่สร้าง</th>
@@ -57,22 +58,23 @@ export default function StockTable({ response }: StockTableProps) {
               return (
                 <tr key={item.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
                   <td className="py-3 pr-4">
-                    <img 
-                      src={item.producy_image?.[0] || "/placeholder.png"} 
-                      alt={item.product_name} 
-                      className="w-10 h-10 object-cover rounded-lg shadow-sm" 
+                    <img
+                      src={item.producy_image?.[0] || "/placeholder.png"}
+                      alt={item.product_name}
+                      className="w-10 h-10 object-cover rounded-lg shadow-sm"
                     />
                   </td>
                   <td className="py-3 pl-3 font-medium text-gray-700">{item.product_name || "-"}</td>
                   <td className="py-3 pr-4 text-gray-600">{item.category || "-"}</td>
-                  <td className="py-3 pr-4 text-right text-gray-700">{Number(item.price ?? 0).toLocaleString()}</td>
-                  <td className="py-3 pr-4 text-center font-medium">{stock.toLocaleString()}</td>
+                  <td className="py-3 pr-4 text-right text-gray-700">{Number(item.price ?? 0).toLocaleString()}บ.</td>
+                  <td className="py-3 pr-4 text-center  text-gray-700">{Number(item.promotion ?? 0).toLocaleString()}บ.</td>
+                  <td className="py-3 pr-4 text-center font-medium">{stock.toLocaleString()}ชิ้น</td>
                   <td className="py-3 pr-4 text-gray-600">{item.status || "พร้อมจัดส่ง"}</td>
                   <td className="py-3 pr-4 text-center text-gray-400">
                     {item.created_at ? new Date(item.created_at).toLocaleDateString("th-TH") : "-"}
                   </td>
                   <td className="py-3 text-right">
-                    <button 
+                    <button
                       onClick={() => setEditingProduct(item)} // เปิด Modal
                       className="px-4 py-2 bg-pink-400 rounded-xl text-xs text-white hover:bg-pink-500 transition-all shadow-sm"
                     >
@@ -87,9 +89,9 @@ export default function StockTable({ response }: StockTableProps) {
 
       {/* 3. เรียกใช้ EditModal */}
       <PopupEdit
-        isOpen={!!editingProduct} 
-        onClose={() => setEditingProduct(null)} 
-        product={editingProduct} 
+        isOpen={!!editingProduct}
+        onClose={() => setEditingProduct(null)}
+        product={editingProduct}
         onSave={handleUpdate} // ส่งฟังก์ชันไปทำงานที่ Backend
       />
     </div>

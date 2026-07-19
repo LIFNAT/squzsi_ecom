@@ -13,7 +13,7 @@ export default function SummaryCards({ response }: propsSummaryCards) {
     0
   );
 
-  const productex = response.filter(p => (p.current_product ?? 0) < 5).length
+  const productex = response.filter(p => p.current_product > 0 && p.current_product <= 5).length;
   const Out_of_stock = response.filter(p => (p.current_product ?? 0) <= 0).length
 
   const cards = [

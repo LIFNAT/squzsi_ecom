@@ -82,7 +82,7 @@ export default function TrackingDetails({ order, onBack }: TrackingDetailsProps)
       // เปลี่ยนหน้า UI ทันที
       setSelectedStatus(newState);
 
-    
+
 
     } catch (err: any) {
       console.log(
@@ -92,37 +92,27 @@ export default function TrackingDetails({ order, onBack }: TrackingDetailsProps)
     }
   };
 
+  const paymentLabel: Record<string, string> = {
+    card: "บัตรเครดิต / เดบิต",
+    qr: "พร้อมเพย์ / QR Code",
+    cod: "เก็บเงินปลายทาง",
+  };
 
   return (
     <div className="bg-white rounded-3xl border border-pink-50 p-6 flex flex-col gap-6 shadow-sm shadow-pink-100/30">
       {/* ===================== ส่วนหัวของข้อมูลรายละเอียด ===================== */}
       <div className="flex items-center justify-between border-b border-pink-50 pb-4">
-        <div className="flex items-center gap-3">
-          {onBack && (
-            <button
-              onClick={onBack}
-              className="md:hidden w-8 h-8 rounded-full bg-pink-50 hover:bg-pink-100 text-pink-500 font-bold text-sm flex items-center justify-center"
-            >
-              ←
-            </button>
-          )}
-          <div>
-            <span className="text-xs text-gray-400 font-semibold block uppercase">ใบจัดส่งสินค้า</span>
-            {/* <h2 className="font-extrabold text-xl text-gray-800">{order.id}</h2> */}
-          </div>
+
+
+        <div className='flex items-center  w-full justify-between'>
+          <span className="text-xs text-gray-400 font-semibold block uppercase">ใบจัดส่งสินค้า {order.receipt}</span>
+          <p className="p-1 bg-amber-200 text-white rounded-2xl px-3 text-xs">
+            {paymentLabel[order.payment_method] || order.payment_method}
+          </p>
         </div>
 
-        <span className="text-xs text-gray-400">
-          อัปเดตล่าสุด:{" "}
-          <span className="font-semibold text-gray-500">
-            {/* {new Date(order.updatedAt).toLocaleDateString("th-TH", {
-              day: "2-digit",
-              month: "short",
-              hour: "2-digit",
-              minute: "2-digit",
-            })} */}
-          </span>
-        </span>
+
+
       </div>
 
       {/* ===================== อัปเดตข้อมูลสำเร็จ Alert ===================== */}
@@ -226,7 +216,7 @@ export default function TrackingDetails({ order, onBack }: TrackingDetailsProps)
           </span>
 
           <div className='flex gap-2 items-center'>
-            <p className="text-sm font-bold text-gray-800">ชื่อสินค้า : </p>
+            <p className="text-sm font-bold text-gray-400">ชื่อสินค้า : </p>
             <span className="text-gray-600 font-medium">{order.product_name}</span>
           </div>
 
@@ -241,14 +231,21 @@ export default function TrackingDetails({ order, onBack }: TrackingDetailsProps)
             <p className="text-sm text-gray-400">
               ชิ้นละ :
             </p>
-            <span className="text-gray-600 font-medium">{order.price}</span>
+            <span className="text-gray-600 font-medium">{(Number(order.price))}</span>
+          </div>
+
+          <div className='flex gap-2 items-center'>
+            <p className="text-sm text-gray-400">
+              ส่วนลด :
+            </p>
+            <span className="text-red-600 font-medium">{(Number(order.promotion)) * (Number(order.quantity))}</span>
           </div>
 
           <div className='flex gap-2 items-center'>
             <p className="text-sm text-gray-400">
               ยอดรวม:
             </p>
-            <span className="text-pink-600 font-bold">{order.total_price} บาท</span>
+            <span className="text-green-600 font-bold">{(Number(order.total_price)) - (Number(order.promotion)) * (Number(order.quantity))} บาท</span>
           </div>
         </div>
 
@@ -259,11 +256,6 @@ export default function TrackingDetails({ order, onBack }: TrackingDetailsProps)
             <span className="text-[10px] font-bold text-pink-400 uppercase tracking-wider block mb-1">
               ผู้รับปลายทาง
             </span>
-            <div className="">
-              <span className="inline-block px-2 py-0.5 bg-white border border-gray-200 rounded text-[10px] text-gray-600">
-                {order.payment_method === 'cod' ? 'ชำระเงินปลายทาง (COD)' : 'ชำระแล้ว'}
-              </span>
-            </div>
           </div>
 
           <div className='flex gap-2 items-center'>
