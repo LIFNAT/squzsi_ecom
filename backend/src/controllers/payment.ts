@@ -130,6 +130,63 @@ export const getorders = async (c: Context) => {
     }
 };
 
+export const getordersbyuser = async (c: Context) => {
+    try {
+        const user_id = c.req.param("id");
+
+        const sql = `
+      SELECT
+        orders.id AS order_id,
+        orders.quantity,
+        orders.price,
+        orders.total_price,
+        orders.payment_method,
+        orders.created_at,
+        orders.state,
+        orders.receipt,
+
+        users.id AS user_id,
+        users.full_name,
+        users.email,
+        users.address,
+
+        product.id AS product_id,
+        product.product_name,
+        product.category
+
+      FROM orders
+
+      INNER JOIN users
+        ON orders.user_id = users.id
+
+      INNER JOIN product
+        ON orders.product_id = product.id
+
+      WHERE users.id = $1
+
+      ORDER BY orders.created_at DESC
+    `;
+
+        const result = await pool.query(sql, [user_id]);
+
+        return c.json({
+            success: true,
+            data: result.rows,
+        });
+
+    } catch (error: any) {
+        console.error("GET USER ORDERS ERROR:", error.message);
+
+        return c.json(
+            {
+                success: false,
+                error: error.message,
+            },
+            500
+        );
+    }
+};
+
 export const changestate = async (c: Context) => {
     try {
         const body = await c.req.json()
@@ -175,13 +232,13 @@ export const changestate = async (c: Context) => {
         });
     } catch (error) {
 
-    console.error(error);
+        console.error(error);
 
-    return c.json({
-      success: false,
-      message: "Server error"
-    }, 500);
-  }
+        return c.json({
+            success: false,
+            message: "Server error"
+        }, 500);
+    }
 }
 
 // import { Context } from "hono";
