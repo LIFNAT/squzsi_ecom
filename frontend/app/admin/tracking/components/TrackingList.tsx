@@ -1,86 +1,114 @@
-import { TrackingOrder, TrackingStatus } from "../../trackingStorage";
+'use client'
 
-// =====================
-// TrackingList — แผงแสดงรายการออเดอร์ทั้งหมดฝั่งซ้าย (Split-View)
-// =====================
+import { useState, useEffect } from "react";
+import { propsTracking } from "../page";
 
-interface TrackingListProps {
-  orders: TrackingOrder[];
-  selectedId: string | null;
-  onSelect: (id: string) => void;
+interface propsTrackingList {
+  respodaw: propsTracking[];
+  onSelect: (order: propsTracking) => void;
 }
 
-const STATUS_MAP: Record<TrackingStatus, { label: string; bg: string; text: string }> = {
-  pending: { label: "รอจัดส่ง", bg: "bg-amber-50", text: "text-amber-600" },
-  processing: { label: "เตรียมส่ง", bg: "bg-blue-50", text: "text-blue-600" },
-  shipped: { label: "ส่งแล้ว", bg: "bg-purple-50", text: "text-purple-600" },
-  delivered: { label: "สำเร็จ", bg: "bg-emerald-50", text: "text-emerald-600" },
-  cancelled: { label: "ยกเลิก", bg: "bg-rose-50", text: "text-rose-500" },
-};
+export default function TrackingList({ respodaw, onSelect }: propsTrackingList) {
 
-export default function TrackingList({ orders, selectedId, onSelect }: TrackingListProps) {
-  if (orders.length === 0) {
-    return (
-      <div className="text-center py-12 text-gray-400 bg-white rounded-2xl border border-pink-50">
-        <div className="text-4xl mb-2">🔍</div>
-        <p className="font-semibold text-gray-700 text-sm">ไม่พบคำสั่งซื้อ</p>
-        <p className="text-xs text-gray-400">ลองเปลี่ยนเงื่อนไขค้นหา</p>
-      </div>
-    );
-  }
+  const [oders, setoders] = useState(respodaw)
+  const [search, setsearch] = useState('')
+  const [status, setStatus] = useState("ทั้งหมด");
+
+  useEffect(() => {
+    setoders(respodaw);
+  }, [respodaw]);
+
+  const statusOptions = [
+    "ทั้งหมด",
+    "รอดำเนินการ",
+    "ระหว่างขนส่ง",
+    "จัดส่งสำเร็จ",
+  ];
+
+  const keyword = search.toLowerCase();
+
+  const filteroders = oders.filter((order) => {
+    const matchSearch =
+      (order.full_name ?? "").toLowerCase().includes(keyword) ||
+      (order.address ?? "").toLowerCase().includes(keyword) ||
+      (order.state ?? "").toLowerCase().includes(keyword) ||
+      (order.receipt ?? "").toLowerCase().includes(keyword) ||
+      (order.email ?? "").toLowerCase().includes(keyword);
+
+    const matchStatus =
+      status === "ทั้งหมด" || order.state === status;
+
+    return matchSearch && matchStatus;
+  });
 
   return (
     <div className="flex flex-col gap-2.5 max-h-[600px] overflow-y-auto pr-1">
-      {orders.map((order) => {
-        const isSelected = order.id === selectedId;
-        const statusInfo = STATUS_MAP[order.status] || {
-          label: order.status,
-          bg: "bg-gray-50",
-          text: "text-gray-600",
-        };
 
-        return (
-          <button
-            key={order.id}
-            onClick={() => onSelect(order.id)}
-            className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
-              isSelected
-                ? "bg-pink-100/40 border-pink-400 shadow-sm shadow-pink-100"
-                : "bg-white border-pink-50 hover:border-pink-200 hover:bg-pink-50/10"
-            }`}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="border relative p-2 rounded-[10px] overflow-auto border-gray-300">
+          <span className="absolute ">
+            🔍
+          </span>
+          <input
+            value={search}
+            onChange={(e) => setsearch(e.target.value)}
+            type="text"
+            placeholder="ค้นหา"
+            className=" w-full pl-6 outline-none"
+          />
+
+        </div>
+
+        <section className="border p-2 rounded-[10px] outline-none overflow-auto w-full border-gray-300">
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            className="w-full outline-none"
           >
-            <div className="flex items-center justify-between gap-2 mb-1.5">
-              <span className="font-bold text-sm text-pink-500">{order.id}</span>
-              <span
-                className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border border-transparent ${statusInfo.bg} ${statusInfo.text}`}
+            {statusOptions.map((item) => (
+              <option key={item} value={item}>
+                {item === "ทั้งหมด" ? "คำสั่งซื้อทั้งหมด" : item}
+              </option>
+            ))}
+          </select>
+        </section>
+
+      </div>
+      <div className="border-t border-pink-50/60 pt-4">
+        <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+          รายการพัสดุ ()
+        </p>
+
+        <div>
+          {filteroders.map((e, i) => {
+            return (
+              <div
+                key={i}
+                onClick={() => onSelect(e)}
+                className="border my-2 border-gray-300 shadow hover:shadow-lg cursor-pointer duration-300 transition-all px-4 pt-5 rounded-2xl"
               >
-                {statusInfo.label}
-              </span>
-            </div>
+                <div className="flex items-center justify-between border-b border-gray-300 pb-1">
+                  <p className="text-sm">เลขที่ใบเสร็จ : <span className="text-pink-600">{e.receipt || '-'}</span></p>
+                  <p className="text-[12px] bg-gray-100 p-1 rounded-2xl px-2">{e.state}</p>
+                </div>
 
-            <div className="flex flex-col gap-0.5">
-              <p className="text-sm font-semibold text-gray-700 truncate">
-                {order.customerName}
-              </p>
-              <p className="text-xs text-gray-400 truncate">
-                {order.productName}
-              </p>
-            </div>
+                <div className="flex flex-col gap-3 pt-2 border-b border-gray-300">
+                  <span className="text-sm text-gray-500">ชื่อผู้รับ : <span className="text-black">{e.full_name || '-'}</span></span>
+                  <span className="text-sm text-gray-500">เบอร์ติดต่อ : <span className="text-black">{e?.numberphone || '-'}</span></span>
+                  <span className="text-sm text-gray-500">ที่อยู่จัดส่ง : <span className="text-black">{e.address || '-'}</span></span>
+                  <span className="text-sm pb-2 text-gray-500">เมล : <span className="text-black">{e.email || '-'}</span></span>
+                </div>
 
-            <div className="flex items-center justify-between mt-2.5 pt-2 border-t border-pink-50/50 text-[10px] text-gray-400">
-              <span className="font-mono">{order.sku}</span>
-              <span>
-                {new Date(order.updatedAt).toLocaleDateString("th-TH", {
-                  day: "2-digit",
-                  month: "short",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
-            </div>
-          </button>
-        );
-      })}
-    </div>
+                <div className="flex items-center justify-between py-2 text-sm">
+                  <p className="">วันที่จัดส่ง</p>
+                  <p>{e.created_at}</p>
+                </div>
+
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div >
   );
 }

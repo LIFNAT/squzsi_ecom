@@ -6,6 +6,7 @@ import { connectDB } from './DB/db.js'
 import product from './router/product.js'
 import addproduct from './router/addproduct.js'
 import auth from './router/auth.js'
+import payment from './router/payment.js'
 const app = new Hono()
 
 await connectDB()
@@ -18,6 +19,7 @@ app.use('/*', cors({
 app.route('/product', product)
 app.route('/addproduct',addproduct)
 app.route('/auth', auth)
+app.route('/payment',payment)
 
 const port = Number(process.env.PORT || 8000)
 

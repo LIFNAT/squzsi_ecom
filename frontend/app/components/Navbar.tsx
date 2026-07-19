@@ -9,6 +9,7 @@ type UserProfile = {
   full_name?: string;
   email?: string;
   created_at?: string;
+  status?: string;
 };
 
 export default function Navbar() {
@@ -30,26 +31,13 @@ export default function Navbar() {
       try {
         const userData = JSON.parse(stored);
         setUser(userData);
-
-        // ถ้ามีข้อมูล user ให้ไปหน้า admin/stock
-        router.push("/admin/stock");
       } catch {
         setUser(null);
       }
     };
 
     loadUser();
-  }, [router]);
-
-
-
-  const handleLogout = () => {
-    if (typeof window !== "undefined") {
-      window.localStorage.removeItem("user");
-    }
-    setUser(null);
-    router.push("/");
-  };
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/80 border-b border-pink-100 shadow-sm">
@@ -108,8 +96,13 @@ export default function Navbar() {
           </Link>
           {/* Login */}
           <Link
-            href={user ? "/admin/stock" : "/auth/login"}
-            className="ml-1 px-4 py-2 bg-pink-400 text-white text-sm font-semibold rounded-full hover:bg-pink-500 active:scale-95 transition-all duration-200 shadow-sm shadow-pink-200"
+            href={
+              !user
+                ? "/auth/login"
+                : user.status === "แอดมิน"
+                  ? "/admin/stock"
+                  : "/"
+            } className="ml-1 px-4 py-2 bg-pink-400 text-white text-sm font-semibold rounded-full hover:bg-pink-500 active:scale-95 transition-all duration-200 shadow-sm shadow-pink-200"
           >
             {user ? user.full_name : "Login"}
           </Link>

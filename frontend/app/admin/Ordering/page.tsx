@@ -1,5 +1,5 @@
-import Control from "@/app/components/Ordering/control";
 import Sizebar from "../stock/components/sizebar";
+import Tracking from "../tracking/page";
 
 export default function Ordering() {
     return (
@@ -7,8 +7,9 @@ export default function Ordering() {
             <div>
                 <Sizebar />
             </div>
+
             <div className="flex-1">
-                <Control/>
+                <Tracking />
             </div>
         </div>
     )

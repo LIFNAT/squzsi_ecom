@@ -119,6 +119,63 @@ export default function AboutItem() {
     fetchData();
   }, []);
 
+  // เก็บลง local
+  const handleBuyNow = () => {
+    if (!product) return;
+
+    const checkoutData = {
+      id: product.id,
+      product_name: product.product_name,
+      price: product.price,
+      quantity,
+      category: product.category,
+      total: product.price * quantity,
+      image: product.producy_image?.[0],
+    };
+    // บอก Payment ว่าเป็นซื้อเลย
+    localStorage.setItem(
+      "checkout-type",
+      "product"
+    );
+    localStorage.setItem(
+      "checkout-product",
+      JSON.stringify(checkoutData)
+    );
+    router.push("/payment");
+  };
+
+  // เพิ่ม local ลง cat
+  const handleAddToCart = () => {
+    if (!product) return;
+
+    const cart = JSON.parse(
+      localStorage.getItem("cart-items") || "[]"
+    );
+
+    const existingIndex = cart.findIndex(
+      (item: any) => item.id === product.id
+    );
+
+    if (existingIndex !== -1) {
+      cart[existingIndex].quantity += quantity;
+    } else {
+      cart.push({
+        id: product.id,
+        product_name: product.product_name,
+        price: product.price,
+        quantity,
+        description: product.description,
+        category: product.category,
+        image: product.producy_image?.[0] || "",
+        promotion: product.promotion
+      });
+    }
+
+    localStorage.setItem("cart-items", JSON.stringify(cart));
+
+    // alert("เพิ่มสินค้าลงตะกร้าแล้ว");
+  };
+
   if (!product) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-4">
@@ -201,7 +258,7 @@ export default function AboutItem() {
                     ฿{product.price}
                   </span>
                   <span className="mb-1 rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-pink-500 shadow-sm">
-                    ลด {product.promotion}%
+                    ลด {product.promotion} บาท
                   </span>
                 </div>
                 {/* <p className="mt-2 text-sm text-gray-600">
@@ -232,14 +289,18 @@ export default function AboutItem() {
 
               <div className="mt-6 grid grid-cols-2 gap-3">
                 {/* ปุ่มซื้อเลย */}
-                <Link href="/payment" className="w-full">
-                  <button className="flex w-full items-center justify-center gap-2 rounded-2xl bg-pink-500 px-4 py-3.5 font-semibold text-white shadow-lg shadow-pink-200 transition hover:bg-pink-600">
-                    ซื้อเลย
-                  </button>
-                </Link>
+                <button
+                  onClick={handleBuyNow}
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-pink-500 px-4 py-3.5 font-semibold text-white shadow-lg shadow-pink-200 transition hover:bg-pink-600"
+                >
+                  ซื้อเลย
+                </button>
 
                 {/* ปุ่มเพิ่มลงตะกร้า */}
-                <button className="flex w-full items-center justify-center gap-2 rounded-2xl border border-gray-500 px-4 py-3.5 font-semibold text-gray-500 transition hover:border-pink-600 hover:bg-pink-600 hover:text-white">
+                <button
+                  onClick={handleAddToCart}
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl border border-gray-500 px-4 py-3.5 font-semibold text-gray-500 transition hover:border-pink-600 hover:bg-pink-600 hover:text-white"
+                >
                   <ShoppingCart size={18} />
                   เพิ่มลงตะกร้า
                 </button>

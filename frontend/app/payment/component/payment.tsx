@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from 'react';
+import { post } from '@/app/post';
+import React, { useEffect, useState } from 'react';
 
 type PaymentMethodId = 'qr' | 'card' | 'cod';
 
@@ -10,7 +11,97 @@ interface PaymentMethod {
 }
 
 export default function Payment() {
+
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethodId>('qr');
+  const [checkoutData, setCheckoutData] = useState<any>(null);
+
+  //เเปลงชิ้น * เงิน
+  const sumpriceitme =
+    checkoutData?.items?.reduce(
+      (sum: number, item: any) =>
+        sum + Number(item.price) * item.quantity,
+      0
+    ) || 0;
+
+  useEffect(() => {
+
+    const checkoutProduct = localStorage.getItem("checkout-product");
+    const cartItems = localStorage.getItem("cart-items");
+
+    const type = localStorage.getItem("checkout-type");
+
+
+    // ซื้อเลย
+    if (type === "product" && checkoutProduct) {
+
+      const product = JSON.parse(checkoutProduct);
+
+      setCheckoutData({
+        type: "product",
+        items: [product]
+      });
+
+      return;
+    }
+
+
+    // จากตะกร้า
+    if (type === "cart" && cartItems) {
+
+      const cart = JSON.parse(cartItems);
+
+      setCheckoutData({
+        type: "cart",
+        items: cart
+      });
+
+      return;
+    }
+
+
+  }, []);
+
+const handleCheckout = async () => {
+
+  if (!checkoutData) {
+    console.log("ไม่มีข้อมูลสินค้า");
+    return;
+  }
+
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  console.log("USER:", user);
+
+  try {
+    const res = await fetch(
+      `${post}/payment/checkout`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          user_id: user.id,
+
+          items: checkoutData.items.map((item:any)=>({
+            product_id:item.id,
+            quantity:item.quantity
+          })),
+
+          payment_method:selectedMethod
+        })
+      }
+    );
+
+    const data = await res.json();
+
+    console.log("response:", data);
+
+  } catch(err){
+    console.error(err);
+  }
+};
 
   const methods: PaymentMethod[] = [
     { id: 'qr', label: 'พร้อมเพย์ / QR Code', desc: 'สแกนจ่ายผ่านแอปธนาคาร' },
@@ -30,18 +121,74 @@ export default function Payment() {
 
         {/* สรุปสินค้า */}
         <div className="bg-white rounded-lg p-4">
+
           <div className="flex justify-between items-center mb-3">
-            <span className="text-sm font-medium text-[#1D1D1D]">รายการสินค้า</span>
-            <span className="text-xs text-[#EE2C6A] font-medium">2 ชิ้น</span>
+            <span className="text-sm font-medium text-[#767676]">
+              รายการสินค้า
+            </span>
+
+            <span className="text-xs text-[#1D1D1D] font-medium">
+              {checkoutData?.items?.map((item: any) => (
+                <div key={item.id}>
+                  {item.product_name}
+                </div>
+              ))}
+            </span>
           </div>
+
+
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-sm font-medium text-[#767676]">
+              หมวดหมู่สินค้า
+            </span>
+
+            <span className="text-xs text-[#1D1D1D] font-medium">
+              {checkoutData?.items?.map((item: any) => (
+                <div key={item.id}>
+                  {item.category}
+                </div>
+              ))}
+            </span>
+          </div>
+
+
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-sm font-medium text-[#767676]">
+              จำนวนสินค้า
+            </span>
+
+            <span className="text-xs text-[#EE2C6A] font-medium">
+              {
+                checkoutData?.items?.reduce(
+                  (sum: number, item: any) => sum + item.quantity,
+                  0
+                ) || 0
+              } ชิ้น
+            </span>
+          </div>
+
+
           <div className="flex justify-between items-center text-sm mb-1.5">
-            <span className="text-[#767676]">ราคาสินค้ารวม</span>
-            <span className="text-[#1D1D1D]">฿590.00</span>
+            <span className="text-[#767676]">
+              ราคาสินค้ารวม
+            </span>
+
+            <span className="text-[#1D1D1D]">
+              {sumpriceitme.toLocaleString()}
+            </span>
           </div>
+
+
           <div className="flex justify-between items-center text-sm">
-            <span className="text-[#767676]">ค่าจัดส่ง</span>
-            <span className="text-[#00B14F] font-medium">ฟรีค่าจัดส่ง</span>
+            <span className="text-[#767676]">
+              ค่าจัดส่ง
+            </span>
+
+            <span className="text-[#00B14F] font-medium">
+              ฟรีค่าจัดส่ง
+            </span>
           </div>
+
         </div>
 
         {/* วิธีชำระเงิน */}
@@ -52,16 +199,14 @@ export default function Payment() {
               <button
                 key={m.id}
                 onClick={() => setSelectedMethod(m.id)}
-                className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-colors text-left ${
-                  selectedMethod === m.id
-                    ? 'border-[#EE2C6A] bg-[#FFF0F5]'
-                    : 'border-[#EAEAEA] bg-white'
-                }`}
+                className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-colors text-left ${selectedMethod === m.id
+                  ? 'border-[#EE2C6A] bg-[#FFF0F5]'
+                  : 'border-[#EAEAEA] bg-white'
+                  }`}
               >
                 <span
-                  className={`flex-shrink-0 w-[18px] h-[18px] rounded-full border-2 flex items-center justify-center ${
-                    selectedMethod === m.id ? 'border-[#EE2C6A]' : 'border-[#C4C4C4]'
-                  }`}
+                  className={`flex-shrink-0 w-[18px] h-[18px] rounded-full border-2 flex items-center justify-center ${selectedMethod === m.id ? 'border-[#EE2C6A]' : 'border-[#C4C4C4]'
+                    }`}
                 >
                   {selectedMethod === m.id && (
                     <span className="w-[9px] h-[9px] rounded-full bg-[#EE2C6A]" />
@@ -124,7 +269,10 @@ export default function Payment() {
             <span className="block text-[11px] text-[#909090]">ยอดชำระทั้งหมด</span>
             <span className="block text-lg font-bold text-[#EE2C6A]">฿590.00</span>
           </div>
-          <button className="bg-[#EE2C6A] hover:bg-[#D4235C] text-white text-sm font-semibold px-8 py-3 rounded-lg transition-colors">
+          <button
+            onClick={handleCheckout}
+            className="bg-[#EE2C6A] hover:bg-[#D4235C] text-white text-sm font-semibold px-8 py-3 rounded-lg transition-colors"
+          >
             ยืนยันคำสั่งซื้อ
           </button>
         </div>

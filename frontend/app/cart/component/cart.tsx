@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Minus, Plus, ShoppingCart, Trash2, Heart } from "lucide-react";
+import Image from "next/image";
 
 type CartItem = {
   id: string;
@@ -13,73 +14,64 @@ type CartItem = {
   discountPercent: number;
   emoji: string;
   quantity: number;
+  product_name: string
+  category: string
+  description: string
+  promotion: number
+  image: string
 };
-
-const initialCartItems: CartItem[] = [
-  {
-    id: "1",
-    name: "พิซซ่าหน้าเปปเปอโรนี",
-    sub: "เมนูขายดี",
-    weight: "300g",
-    price: 199,
-    originalPrice: 220,
-    discountPercent: 10,
-    emoji: "🍕",
-    quantity: 1,
-  },
-  {
-    id: "2",
-    name: "เบอร์เกอร์ชีสสองชั้น",
-    sub: "เมนูใหม่",
-    weight: "250g",
-    price: 149,
-    originalPrice: 170,
-    discountPercent: 12,
-    emoji: "🍔",
-    quantity: 2,
-  },
-  {
-    id: "3",
-    name: "น้ำอัดลมเย็นๆ",
-    sub: "เครื่องดื่ม",
-    weight: "500ml",
-    price: 29,
-    originalPrice: 35,
-    discountPercent: 15,
-    emoji: "🥤",
-    quantity: 1,
-  },
-];
 
 export default function Cart() {
   const router = useRouter();
-  const [cartItems, setCartItems] = useState<CartItem[]>(initialCartItems);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const updateQuantity = (id: string, delta: number) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
+  useEffect(() => {
+    const cart = JSON.parse(
+      localStorage.getItem("cart-items") || "[]"
     );
+
+    setCartItems(cart);
+  }, []);
+
+  // จำนวนสินค้าแล้วอัปเดต localStorage
+  const updateQuantity = (id: string, delta: number) => {
+    const updated = cartItems.map((item) =>
+      item.id === id
+        ? {
+          ...item,
+          quantity: Math.max(1, item.quantity + delta),
+        }
+        : item
+    );
+
+    setCartItems(updated);
+    localStorage.setItem("cart-items", JSON.stringify(updated));
   };
 
+  // ลบสินค้าแล้วอัปเดต localStorage
   const removeItem = (id: string) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    const updated = cartItems.filter((item) => item.id !== id);
+
+    setCartItems(updated);
+    localStorage.setItem("cart-items", JSON.stringify(updated));
   };
 
   const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) =>
+      sum + Number(item.price) * item.quantity,
     0
   );
   const totalDiscount = cartItems.reduce(
     (sum, item) =>
-      sum + (item.originalPrice - item.price) * item.quantity,
+      sum +
+      (Number(item.promotion)) *
+      item.quantity,
     0
   );
+
   const shippingFee = subtotal > 0 ? 30 : 0;
-  const total = subtotal + shippingFee;
+
+  const total = subtotal - totalDiscount + shippingFee;
 
   if (cartItems.length === 0) {
     return (
@@ -121,7 +113,13 @@ export default function Cart() {
               className="flex gap-4 rounded-[24px] border border-gray-100 bg-white p-4 shadow-sm"
             >
               <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-pink-50 flex items-center justify-center">
-                <span className="text-5xl select-none">{item.emoji}</span>
+                <Image
+                  src={`${item.image}`}
+                  alt=""
+                  fill
+                  priority={true}
+                  className="object-cover"
+                />
               </div>
 
               <div className="flex flex-1 flex-col justify-between">
@@ -129,12 +127,12 @@ export default function Cart() {
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <span className="rounded-full bg-pink-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-pink-500">
-                        {item.sub}
+                        {item.category}
                       </span>
                       <h3 className="mt-1 font-semibold text-[#1D1D1D]">
-                        {item.name}
+                        {item.product_name}
                       </h3>
-                      <p className="text-xs text-gray-400">{item.weight}</p>
+                      <p className="text-xs text-gray-400">รายละเอียดสินค้า : {item.description}</p>
                     </div>
                     <button
                       onClick={() => removeItem(item.id)}
@@ -152,7 +150,7 @@ export default function Cart() {
                       ฿{item.price.toLocaleString()}
                     </span>
                     <span className="text-xs text-gray-400 line-through">
-                      ฿{item.originalPrice.toLocaleString()}
+                      {/* ฿{item.originalPrice.toLocaleString()} */}
                     </span>
                   </div>
 
@@ -216,7 +214,13 @@ export default function Cart() {
             </p>
           </div>
           <button
-            onClick={() => router.push("/payment")}
+            onClick={() => {
+              localStorage.setItem(
+                "checkout-type",
+                "cart"
+              );
+              router.push("/payment");
+            }}
             className="flex items-center gap-2 rounded-2xl bg-pink-500 px-8 py-3.5 font-semibold text-white shadow-lg shadow-pink-200 transition hover:bg-pink-600"
           >
             <ShoppingCart size={18} />
