@@ -128,6 +128,7 @@ export default function AboutItem() {
       product_name: product.product_name,
       price: product.price,
       quantity,
+      promotion: product.promotion,
       category: product.category,
       total: product.price * quantity,
       image: product.producy_image?.[0],
