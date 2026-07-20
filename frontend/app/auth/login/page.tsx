@@ -1,11 +1,9 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
 import { API_BASE_URL } from "../config";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -29,9 +27,14 @@ export default function LoginPage() {
         return;
       }
 
+      // บันทึกข้อมูลโปรไฟล์ลง localStorage
       localStorage.setItem("user", JSON.stringify(result.data));
       setMessage("เข้าสู่ระบบสำเร็จ");
-      router.push("/");
+
+      //  เปลี่ยนจาก router.push("/") มาใช้ window.location.replace("/") 
+      // เพื่อบังคับให้แอปโหลดสถานะใหม่ทั้งหมด ตัว Navbar จะได้ดึงชื่อผู้ใช้มาแสดงทันที
+      window.location.replace("/");
+      
     } catch (error) {
       setMessage("เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ");
     } finally {
@@ -85,3 +88,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

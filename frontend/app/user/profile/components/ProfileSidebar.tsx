@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import AddressSection from "./AddressSection";
 import OrdersSection from "./OrdersSection";
-import WishlistSection from "./WishlistSection";
-import PointsSection from "./PointsSection";
-import SecuritySection from "./SecuritySection";
+import Profileeidt from "./profileeidt";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 interface User {
   id: number;
@@ -14,31 +14,81 @@ interface User {
   address: string;
   status: string;
   created_at: string;
+  phone: string
 }
 
 const TABS = [
   { key: "orders", label: "คำสั่งซื้อของฉัน", icon: "" },
   { key: "address", label: "ที่อยู่จัดส่ง", icon: "" },
+  { key: "profileeidt", label: "เเก้ไขโปรโฟล์", icon: "" },
+  { key: "out", label: "ออกระบบ", icon: "" },
 ];
 
 export default function ProfileSidebar() {
   const [activeTab, setActiveTab] = useState("orders");
-  const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
+
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window !== "undefined") {
+      const data = localStorage.getItem("user");
+
+      if (data) {
+        return JSON.parse(data);
+      }
+    }
+
+    return null;
+  });
 
   useEffect(() => {
     const data = localStorage.getItem("user");
-    if (data) {
-      setUser(JSON.parse(data));
+    if (!data) {
+      router.replace("/");
+      return;
     }
-  }, []);
+
+    try {
+      const parsedUser = JSON.parse(data);
+      // อนุญาตให้เข้าได้เฉพาะลูกค้าเท่านั้น (หากเป็น แอดมิน หรือสถานะอื่น จะถูกบังคับเปลี่ยนเส้นทาง)
+      if (parsedUser.status !== "ลูกค้า") {
+        router.replace("/");
+      }
+    } catch {
+      router.replace("/");
+    }
+  }, [router]);
+
+  // 🛠️ ฟังก์ชันจัดการการคลิก Tab รวมถึงระบบออกระบบ (Logout)
+  const handleTabClick = async (key: string) => {
+    if (key === "out") {
+      const result = await Swal.fire({
+        title: "คุณต้องการออกจากระบบใช่หรือไม่?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#ec4899",
+        cancelButtonColor: "#6b7280",
+        confirmButtonText: "ใช่, ออกจากระบบ",
+        cancelButtonText: "ยกเลิก"
+      });
+
+      if (result.isConfirmed) {
+        // ล้างข้อมูลใน localStorage
+        localStorage.clear();
+
+        window.location.replace("/");
+      }
+      return;
+    }
+
+    setActiveTab(key);
+  };
 
   const TAB_COMPONENTS = {
     orders: <OrdersSection />,
     address: <AddressSection />,
-    // wishlist: <WishlistSection />,
-    // points: <PointsSection />,
-    // security: <SecuritySection />,
+    profileeidt: <Profileeidt />
   };
+
 
   return (
     <aside className="w-full  shrink-0 grid grid-cols-3 gap-5">
@@ -73,10 +123,15 @@ export default function ProfileSidebar() {
               </div>
 
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-500">สถานะ</span>
+                <span className="text-gray-500">เมล</span>
                 <span className="font-semibold text-pink-500">
-                  {user?.status}
+                  {user?.email}
                 </span>
+              </div>
+
+              <div className="text-sm flex justify-between">
+                <p className="text-gray-500 mb-1">เบอร์ติดต่อ</p>
+                <p className="text-gray-700 break-words">{user?.phone}</p>
               </div>
 
               <div className="text-sm flex justify-between">
@@ -89,37 +144,36 @@ export default function ProfileSidebar() {
               สมัครเมื่อ{" "}
               {user?.created_at
                 ? new Date(user.created_at).toLocaleDateString("th-TH", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })
                 : "-"}
             </div>
           </div>
         </div>
 
         {/* Tab Navigation */}
-        <div className="p-2 space-y-1 rounded-2xl border-gray-200 border  bg-white">
+        <div className="p-2 space-y-1 rounded-2xl border-gray-200 border bg-white">
           {TABS.map((tab) => (
             <button
               key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
+              onClick={() => handleTabClick(tab.key)} // 👈 เปลี่ยนมาใช้ฟังก์ชัน handleTabClick ตัวใหม่
               className={`w-full text-left p-3 rounded-xl transition-all duration-300 ease-in-out font-medium
-        ${
-          activeTab === tab.key
-            ? "bg-pink-400 text-white shadow-md scale-[1.02]"
-            : "bg-white text-gray-600 hover:bg-gray-50"
-        }`}
+        ${activeTab === tab.key
+                  ? "bg-pink-400 text-white shadow-md scale-[1.02]"
+                  : "bg-white text-gray-600 hover:bg-gray-50"
+                } ${tab.key === 'out' ? 'hover:bg-red-50 hover:text-red-500' : ''}`} // 💡 เพิ่มสีแดงจางๆ ตอนชี้ปุ่มออกระบบ
             >
               {tab.label}
             </button>
           ))}
         </div>
       </div>
-
       <main className="flex-1 col-span-2 ">
         {TAB_COMPONENTS[activeTab as keyof typeof TAB_COMPONENTS]}
       </main>
+
     </aside>
   );
 }

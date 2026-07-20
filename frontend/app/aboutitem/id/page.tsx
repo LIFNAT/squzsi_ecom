@@ -179,19 +179,16 @@ export default function AboutItem() {
 
   if (!product) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4">
-        <h2 className="text-xl font-bold text-gray-800 mb-2">
-          ไม่พบข้อมูลสินค้านี้
+      <div className="min-h-screen bg-gray-50/50 flex flex-col items-center justify-center px-4">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-pink-500 to-rose-400 flex items-center justify-center text-white shadow-lg shadow-pink-200 animate-bounce mb-4">
+          <Sparkles className="w-7 h-7 animate-spin" />
+        </div>
+        <h2 className="text-lg font-extrabold text-gray-800 mb-1">
+          กำลังโหลดข้อมูล...
         </h2>
-        <p className="text-sm text-gray-400 mb-6">
-          ลิงก์อาจไม่ถูกต้องหรือไม่มีสินค้าชิ้นนี้ในระบบ
+        <p className="text-xs text-pink-400 font-semibold">
+          กรุณารอสักครู่ ระบบกำลังดึงข้อมูลสินค้าที่คุณชื่นชอบ
         </p>
-        <button
-          onClick={() => router.push("/")}
-          className="px-6 py-2 bg-pink-500 text-white font-medium text-sm rounded-full hover:bg-pink-600 transition-colors shadow-sm"
-        >
-          กลับสู่หน้าหลัก
-        </button>
       </div>
     );
   }

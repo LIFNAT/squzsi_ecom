@@ -108,9 +108,11 @@ export default function OrdersSection() {
         })}
       </div>
 
-      <div className="flex flex-col gap-4 max-h-[700px] overflow-y-auto pr-2">
-        {filteredOrders.length === 0 ? (
-          <p>ไม่พบคำสั่งซื้อ</p>
+      <div className="flex flex-col gap-4 max-h-[700px] overflow-y-auto pr-2 ">
+        {filteredOrders.length === 0 ? ( 
+          <div className='bg-white h-screen p-2 rounded-2xl b '>
+            <p>ไม่พบคำสั่งซื้อ</p>
+          </div>
         ) : (
           filteredOrders.map((order: any) => (
             <div

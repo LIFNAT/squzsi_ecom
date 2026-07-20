@@ -26,7 +26,7 @@ export default function PopupEdit({ isOpen, onClose, product, onSave }: EditModa
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0] && targetIndex !== null) {
       const file = e.target.files[0];
-      const newUrl = URL.createObjectURL(file); 
+      const newUrl = URL.createObjectURL(file);
       setFormData(prev => {
         if (!prev) return null;
         const newImages = [...(prev.producy_image || [])];
@@ -53,33 +53,68 @@ export default function PopupEdit({ isOpen, onClose, product, onSave }: EditModa
         <div className="space-y-4">
           <div>
             <label className="text-xs font-semibold text-gray-400 uppercase">ชื่อสินค้า</label>
-            <input value={formData.product_name || ""} onChange={(e) => setFormData(prev => ({...prev!, product_name: e.target.value}))} className="w-full mt-1 p-2.5 bg-gray-50 border rounded-xl" />
+            <input value={formData.product_name || ""} onChange={(e) => setFormData(prev => ({ ...prev!, product_name: e.target.value }))} className="w-full mt-1 p-2.5 bg-gray-50 border rounded-xl" />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-xs font-semibold text-gray-400 uppercase">ราคา</label>
-              <input type="number" value={formData.price || 0} onChange={(e) => setFormData(prev => ({...prev!, price: Number(e.target.value)}))} className="w-full mt-1 p-2.5 bg-gray-50 border rounded-xl" />
+              <input type="number" value={formData.price || 0} onChange={(e) => setFormData(prev => ({ ...prev!, price: Number(e.target.value) }))} className="w-full mt-1 p-2.5 bg-gray-50 border rounded-xl" />
             </div>
             <div>
               <label className="text-xs font-semibold text-gray-400 uppercase">สต็อก</label>
-              <input type="number" value={formData.current_product || 0} onChange={(e) => setFormData(prev => ({...prev!, current_product: Number(e.target.value)}))} className="w-full mt-1 p-2.5 bg-gray-50 border rounded-xl" />
+              <input type="number" value={formData.current_product || 0} onChange={(e) => setFormData(prev => ({ ...prev!, current_product: Number(e.target.value) }))} className="w-full mt-1 p-2.5 bg-gray-50 border rounded-xl" />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-xs font-semibold text-gray-400 uppercase">หมวดหมู่</label>
-              <input value={formData.category || ""} onChange={(e) => setFormData(prev => ({...prev!, category: e.target.value}))} className="w-full mt-1 p-2.5 bg-gray-50 border rounded-xl" />
+              <input value={formData.category || ""} onChange={(e) => setFormData(prev => ({ ...prev!, category: e.target.value }))} className="w-full mt-1 p-2.5 bg-gray-50 border rounded-xl" />
             </div>
             <div>
               <label className="text-xs font-semibold text-gray-400 uppercase">สถานะ</label>
-              <select value={formData.status || "พร้อมจัดส่ง"} onChange={(e) => setFormData(prev => ({...prev!, status: e.target.value}))} className="w-full mt-1 p-2.5 bg-gray-50 border rounded-xl">
+              <select value={formData.status || "พร้อมจัดส่ง"} onChange={(e) => setFormData(prev => ({ ...prev!, status: e.target.value }))} className="w-full mt-1 p-2.5 bg-gray-50 border rounded-xl">
                 <option value="พร้อมจัดส่ง">พร้อมจัดส่ง</option>
                 <option value="สินค้าหมด">สินค้าหมด</option>
                 <option value="รอเติมสต็อก">รอเติมสต็อก</option>
               </select>
             </div>
+          </div>
+
+          <div>
+            <label className="text-xs font-semibold text-gray-400 uppercase">
+              โปรโมชั่น
+            </label>
+            <input
+              type="number"
+              value={formData.promotion || 0}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev!,
+                  promotion: Number(e.target.value),
+                }))
+              }
+              className="w-full mt-1 p-2.5 bg-gray-50 border rounded-xl"
+            />
+          </div>
+
+
+          <div>
+            <label className="text-xs font-semibold text-gray-400 uppercase">
+              รายละเอียดสินค้า
+            </label>
+            <textarea
+              rows={4}
+              value={formData.description || ""}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev!,
+                  description: e.target.value,
+                }))
+              }
+              className="w-full mt-1 p-2.5 bg-gray-50 border rounded-xl resize-none"
+            />
           </div>
 
           <div className="pt-2">
