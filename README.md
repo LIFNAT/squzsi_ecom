@@ -97,9 +97,11 @@
 
 ## 🌐 UAT / SLA
 
-👉 [เข้าชม Vercel Live Demo](https://frontend-weld-xi-cmw3u2x2t4.vercel.app/)
+https://uat-wheat.vercel.app/
 
 ---
+## Persona
+https://www.canva.com/design/DAHOZJWa2Qk/NoJ1E_g-VmJ4pvQ2p5IJyQ/edit
 
 ## 📐 Diagrams
 
@@ -118,11 +120,12 @@
 
 ---
 
-### ⚙️ System Flow
-<img width="522" alt="System Flow" src="https://github.com/user-attachments/assets/e80f2d4b-0492-45a6-bac1-44ccc901d53a" />
+### ⚙️ System Architecture
+<!-- <img width="522" alt="System Flow" src="https://github.com/user-attachments/assets/e80f2d4b-0492-45a6-bac1-44ccc901d53a" /> -->
+<img width="1234" height="212" alt="systemarchitecture" src="https://github.com/user-attachments/assets/99517d4a-d4aa-48e5-8f8f-fcba98a5dca7" />
 
 ---
 
 ## 🔗 เครื่องมือเพิ่มเติม
-
-* Markdown จัดทำเอกสาร README.md หรือใช้ใน HTML: [Squishy Markdown](https://squsimarkdown.netlify.app/#need-fuction)
+markdown
+https://frontend-weld-xi-cmw3u2x2t4.vercel.app/
