@@ -34,7 +34,7 @@ export default async function Pagestock() {
     const response: propsgetProduct[] = await getProduct();
     return (
         <div className="flex w-full  ">
-          <div className="">
+            <div className="">
                 <Sizebar />
             </div>
 

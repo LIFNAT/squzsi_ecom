@@ -306,7 +306,7 @@ export default function Statement() {
 
   return (
     <div className="h-screen overflow-hidden bg-pink-50/40 p-4 md:p-8">
-      <div className="mx-auto flex h-full max-w-7xl flex-col overflow-hidden rounded-[28px] border border-gray-100 bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.04)] md:p-8">
+      <div className="mx-auto flex h-full w-full flex-col overflow-hidden rounded-[28px] border border-gray-100 bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.04)] md:p-8">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-pink-500">

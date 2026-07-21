@@ -1,34 +1,65 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export function useAdminGuard() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const userData = localStorage.getItem('user');
-
-    if (!userData) {
-      router.replace('/');
-      return;
-    }
-
+  // ตรวจสอบสิทธิ์ตั้งแต่ตอนประกาศ State ครั้งแรก (Lazy Initial State)
+  const [loading, setLoading] = useState(() => {
     try {
-      const user = JSON.parse(userData);
-
-      if (user.status !== 'แอดมิน') {
+      const userData = localStorage.getItem('user');
+      if (!userData) {
         router.replace('/');
-        return;
+        return true; // ปล่อยให้ loading ค้างไว้ระหว่าง redirect
       }
 
-      setLoading(false);
+      const user = JSON.parse(userData);
+      if (user.status !== 'แอดมิน') {
+        router.replace('/');
+        return true;
+      }
 
+      // ถ้าผ่านเงื่อนไขทั้งหมด แปลว่าโหลดเสร็จและเป็นแอดมินตัวจริง ไม่ต้องแสดงสถานะโหลด
+      return false;
     } catch {
       router.replace('/');
+      return true;
     }
-  }, [router]);
+  });
+
+  return loading;
+}
+
+export function useSuperadmin() {
+  const router = useRouter();
+
+  // ตรวจสอบสิทธิ์ตั้งแต่ตอนประกาศ State ครั้งแรก (Lazy Initial State)
+  const [loading, setLoading] = useState(() => {
+    try {
+      const userData = localStorage.getItem('user');
+      if (!userData) {
+        router.replace('/');
+        return true;
+      }
+
+      const user = JSON.parse(userData);
+
+      // ตรวจสอบสิทธิ์เฉพาะแอดมิน รองรับทั้งภาษาไทยและอังกฤษ (แอดมิน, admin, ผู้ดูแลระบบ)
+      const allowedRoles = ['ผู้ดูแลระบบ'];
+      if (!allowedRoles.includes(user.status)) {
+        router.replace('/');
+        return true;
+      }
+
+      // ผ่านเงื่อนไขแอดมิน ปิดสถานะโหลด
+      return false;
+    } catch {
+      router.replace('/');
+      return true;
+    }
+  });
 
   return loading;
 }
