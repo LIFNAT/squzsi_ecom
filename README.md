@@ -69,6 +69,9 @@
 *   **Sensory & Emotional Relief:** รองรับไลฟ์สไตล์การคลายเครียดของคนรุ่นใหม่
 *   **Scalable Architecture:** ออกแบบมาเพื่อรองรับจำนวนผู้ใช้ที่เพิ่มขึ้น
 *   **High Security:** ปกป้องข้อมูลลูกค้าด้วยระบบ Row Level Security (RLS) จาก Supabase
+---
+UAT / SLA
+https://frontend-weld-xi-cmw3u2x2t4.vercel.app/
 
 ---
 System Architecture
