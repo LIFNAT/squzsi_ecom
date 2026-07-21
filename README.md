@@ -120,8 +120,9 @@ https://www.canva.com/design/DAHOZJWa2Qk/NoJ1E_g-VmJ4pvQ2p5IJyQ/edit
 
 ---
 
-### ⚙️ System Flow
-<img width="522" alt="System Flow" src="https://github.com/user-attachments/assets/e80f2d4b-0492-45a6-bac1-44ccc901d53a" />
+### ⚙️ System Architecture
+<!-- <img width="522" alt="System Flow" src="https://github.com/user-attachments/assets/e80f2d4b-0492-45a6-bac1-44ccc901d53a" /> -->
+<img width="1234" height="212" alt="systemarchitecture" src="https://github.com/user-attachments/assets/99517d4a-d4aa-48e5-8f8f-fcba98a5dca7" />
 
 ---
 
