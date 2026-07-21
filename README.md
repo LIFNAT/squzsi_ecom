@@ -97,7 +97,7 @@
 
 ## 🌐 UAT / SLA
 
-👉 [เข้าชม Vercel Live Demo](https://frontend-weld-xi-cmw3u2x2t4.vercel.app/)
+https://uat-wheat.vercel.app/
 
 ---
 ## Persona
