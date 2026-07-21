@@ -127,5 +127,5 @@ https://www.canva.com/design/DAHOZJWa2Qk/NoJ1E_g-VmJ4pvQ2p5IJyQ/edit
 ---
 
 ## 🔗 เครื่องมือเพิ่มเติม
-
-* Markdown จัดทำเอกสาร README.md หรือใช้ใน HTML: [Squishy Markdown](https://squsimarkdown.netlify.app/#need-fuction)
+markdown
+https://frontend-weld-xi-cmw3u2x2t4.vercel.app/
