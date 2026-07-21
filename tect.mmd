@@ -1,16 +1,21 @@
-    flowchart LR
-        %% กำหนดสไตล์ Actor และ Use Case
-        classDef actor fill:#f9f9f9,stroke:#333,stroke-width:2px;
-        classDef usecase fill:#e1f5fe,stroke:#0277bd,stroke-width:1.5px,rx:20,ry:20;
+flowchart LR
+    %% ===================================================
+    %% STYLES & DEFINITIONS
+    %% ===================================================
+    classDef actor fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef usecase fill:#e1f5fe,stroke:#0277bd,stroke-width:1.5px,rx:20,ry:20;
 
-        %% กำหนด Actors
-        User["User"]:::actor
-        Admin["Admin"]:::actor
+    %% Actors
+    User["User (ลูกค้าทั่วไป)"]:::actor
+    Admin["Admin (ผู้ดูแลระบบ)"]:::actor
+    SuperAdmin["SuperAdmin (ผู้ดูแลสูงสุด)"]:::actor
 
-        %% สร้างกรอบครอบระบบ
-        subgraph System ["Squishy Shop System"]
-        
-            %% Use Cases
+    %% ===================================================
+    %% SYSTEM BOUNDARY & USE CASES
+    %% ===================================================
+    subgraph System ["Squishy Shop System"]
+
+        subgraph UserModule ["ระบบสำหรับลูกค้า"]
             RL(["Register / Login"])
             BSS(["Browse & Search Squishy"])
             VSD(["View Squishy Details"])
@@ -19,29 +24,50 @@
             UPS(["Upload Payment Slip"])
             TOS(["Track Order Status"])
             MP(["Manage Profile"])
-            
+        end
+
+        subgraph AdminModule ["ระบบจัดการร้านค้า (Admin)"]
             MSI(["Manage Squishy Inventory"])
             VPS(["Verify Payment Slip"])
             USS(["Update Shipping Status"])
             VSR(["View Sales Report"])
         end
 
-        %% การเชื่อมต่อของ User
-        User ----> RL
-        User --> BSS
-        User --> MC
-        User --> TOS
-        User --> MP
+        subgraph SuperAdminModule ["ระบบบริหารบัญชีและงบการเงิน (SuperAdmin)"]
+            CRA(["Create Admin Account"])
+            MGN(["Manage User & Admin Accounts"])
+            STM(["View Statement"])
+        end
 
-        %% การเชื่อมต่อของ Admin
-        RL ---- Admin
-        MSI --- Admin
-        VPS ----- Admin
-        USS --- Admin
-        VSR --- Admin
+    end
 
-        %% ความสัมพันธ์ (ใช้เส้นประสำหรับ extends/include)
-        VSD -.extends.-> BSS
-        MC -.include.-> CCO
-        CCO -.include.-> UPS
+    %% ===================================================
+    %% ACTOR CONNECTIONS
+    %% ===================================================
 
+    %% Connections for User
+    User ---> RL
+    User ---> BSS
+    User ---> MC
+    User ---> TOS
+    User ---> MP
+
+    %% Connections for Admin
+    Admin ---> RL
+    Admin ---> MSI
+    Admin ---> VPS
+    Admin ---> USS
+    Admin ---> VSR
+
+    %% Connections for SuperAdmin
+    SuperAdmin --|> Admin
+    SuperAdmin ---> CRA
+    SuperAdmin ---> MGN
+    SuperAdmin ---> STM
+
+    %% ===================================================
+    %% USE CASE RELATIONSHIPS
+    %% ===================================================
+    VSD -.extends.-> BSS
+    MC -.include.-> CCO
+    CCO -.include.-> UPS
