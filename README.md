@@ -120,6 +120,15 @@ https://www.canva.com/design/DAHOZJWa2Qk/NoJ1E_g-VmJ4pvQ2p5IJyQ/edit
 
 ---
 
+---
+### Data Schema json
+auth : https://github.com/LIFNAT/squzsi_ecom/blob/main/API%20Endpoints/User%20Authentication%20%26%20Profile.md  
+product : https://github.com/LIFNAT/squzsi_ecom/blob/main/API%20Endpoints/dbproduct.md
+addproduct : https://github.com/LIFNAT/squzsi_ecom/blob/main/API%20Endpoints/addproduct.md0
+payment : https://github.com/LIFNAT/squzsi_ecom/blob/main/API%20Endpoints/payment.md
+promotion : https://github.com/LIFNAT/squzsi_ecom/blob/main/API%20Endpoints/promotion.md
+--
+
 ### ⚙️ System Architecture
 <!-- <img width="522" alt="System Flow" src="https://github.com/user-attachments/assets/e80f2d4b-0492-45a6-bac1-44ccc901d53a" /> -->
 <img width="1234" height="212" alt="systemarchitecture" src="https://github.com/user-attachments/assets/99517d4a-d4aa-48e5-8f8f-fcba98a5dca7" />
