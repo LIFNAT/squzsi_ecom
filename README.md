@@ -117,6 +117,8 @@ https://www.canva.com/design/DAHOZJWa2Qk/NoJ1E_g-VmJ4pvQ2p5IJyQ/edit
 
 ### ⏱️ Sequence Diagram
 <img width="1758" alt="Sequence Diagram" src="https://github.com/user-attachments/assets/23498f8b-57a9-458d-bfd4-e6e7d9610fce" />
+<img width="1860" height="3456" alt="image" src="https://github.com/user-attachments/assets/256cab17-2a95-4a0a-a447-5d8f52a038a7" />
+<img width="1787" height="723" alt="image" src="https://github.com/user-attachments/assets/aff59d93-004a-488d-bd39-5a94a7f2ffaf" />
 
 ---
 
