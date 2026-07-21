@@ -100,6 +100,8 @@
 👉 [เข้าชม Vercel Live Demo](https://frontend-weld-xi-cmw3u2x2t4.vercel.app/)
 
 ---
+## Persona
+https://www.canva.com/design/DAHOZJWa2Qk/NoJ1E_g-VmJ4pvQ2p5IJyQ/edit
 
 ## 📐 Diagrams
 
